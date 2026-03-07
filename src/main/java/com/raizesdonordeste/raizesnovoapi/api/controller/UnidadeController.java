@@ -13,46 +13,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.raizesdonordeste.raizesnovoapi.api.dto.ProdutoRequest;
-import com.raizesdonordeste.raizesnovoapi.api.dto.ProdutoResponse;
-import com.raizesdonordeste.raizesnovoapi.application.service.ProdutoService;
-
+import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeRequest;
+import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeResponse;
+import com.raizesdonordeste.raizesnovoapi.application.service.UnidadeService;
 
 @RestController
-@RequestMapping("/produtos")
-public class ProdutoController {
+@RequestMapping("/unidades")
+public class UnidadeController {
 
-    private final ProdutoService produtoService;
+    private final UnidadeService unidadeService;
 
-    public ProdutoController(ProdutoService produtoService) {
-        this.produtoService = produtoService;
+    public UnidadeController(UnidadeService unidadeService) {
+        this.unidadeService = unidadeService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProdutoResponse criar(@RequestBody ProdutoRequest request) {
-        return produtoService.salvar(request);
+    public UnidadeResponse criar(@RequestBody UnidadeRequest request) {
+        return unidadeService.salvar(request);
     }
 
     @GetMapping
-    public List<ProdutoResponse> listar() {
-        return produtoService.listarTodos();
+    public List<UnidadeResponse> listar() {
+        return unidadeService.listarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProdutoResponse> buscarPorId(@PathVariable Long id) {
-        ProdutoResponse produto = produtoService.buscarPorId(id);
+    public ResponseEntity<UnidadeResponse> buscarPorId(@PathVariable Long id) {
+        UnidadeResponse unidade = unidadeService.buscarPorId(id);
 
-        if (produto == null) {
+        if (unidade == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(produto);
+        return ResponseEntity.ok(unidade);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long id) {
-        produtoService.deletarPorId(id);
+        unidadeService.deletarPorId(id);
     }
 }

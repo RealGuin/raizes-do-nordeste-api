@@ -3,6 +3,7 @@ package com.raizesdonordeste.raizesnovoapi.api.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,8 +39,14 @@ public class UsuarioController {
     }
 
     @GetMapping("/{id}")
-    public UsuarioResponse buscarPorId(@PathVariable Long id) {
-        return usuarioService.buscarPorId(id);
+    public ResponseEntity<UsuarioResponse> buscarPorId(@PathVariable Long id) {
+        UsuarioResponse usuario = usuarioService.buscarPorId(id);
+
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(usuario);
     }
 
     @DeleteMapping("/{id}")
