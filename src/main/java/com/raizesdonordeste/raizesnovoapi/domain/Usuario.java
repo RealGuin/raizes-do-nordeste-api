@@ -83,5 +83,3 @@ public class Usuario {
 	        this.dataConsentimento = dataConsentimento;
 	    }
 	}
-
-}
