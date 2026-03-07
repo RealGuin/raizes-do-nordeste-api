@@ -1,4 +1,4 @@
-package com.raizesdonordeste.raizesnovoapi.api.controller;
+package com.raizesdonordeste.raizesnovoapi.api.dto;
 
 import java.time.LocalDateTime;
 

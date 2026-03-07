@@ -1,0 +1,6 @@
+2026-03-07 15:38:41.856362-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USUARIOS" not found; SQL statement:
+select * from usuarios [42102-240]
+2026-03-07 15:38:52.238353-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTOS" not found; SQL statement:
+select * from produtos [42102-240]

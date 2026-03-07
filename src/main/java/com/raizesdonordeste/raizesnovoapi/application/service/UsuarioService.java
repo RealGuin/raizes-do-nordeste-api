@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.raizesdonordeste.raizesnovoapi.api.controller.UsuarioResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.UsuarioRequest;
+import com.raizesdonordeste.raizesnovoapi.api.dto.UsuarioResponse;
 import com.raizesdonordeste.raizesnovoapi.domain.Role;
 import com.raizesdonordeste.raizesnovoapi.domain.Usuario;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.UsuarioRepository;

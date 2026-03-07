@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.raizesdonordeste.raizesnovoapi.api.dto.UsuarioRequest;
+import com.raizesdonordeste.raizesnovoapi.api.dto.UsuarioResponse;
 import com.raizesdonordeste.raizesnovoapi.application.service.UsuarioService;
 
 @RestController
