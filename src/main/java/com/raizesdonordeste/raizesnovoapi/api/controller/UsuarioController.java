@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.raizesdonordeste.raizesnovoapi.api.dto.UsuarioRequest;
 import com.raizesdonordeste.raizesnovoapi.application.service.UsuarioService;
-import com.raizesdonordeste.raizesnovoapi.domain.Usuario;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -27,17 +27,17 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Usuario criar(@RequestBody Usuario usuario) {
-        return usuarioService.salvar(usuario);
+    public UsuarioResponse criar(@RequestBody UsuarioRequest request) {
+        return usuarioService.salvar(request);
     }
 
     @GetMapping
-    public List<Usuario> listar() {
+    public List<UsuarioResponse> listar() {
         return usuarioService.listarTodos();
     }
 
     @GetMapping("/{id}")
-    public Usuario buscarPorId(@PathVariable Long id) {
+    public UsuarioResponse buscarPorId(@PathVariable Long id) {
         return usuarioService.buscarPorId(id);
     }
 
