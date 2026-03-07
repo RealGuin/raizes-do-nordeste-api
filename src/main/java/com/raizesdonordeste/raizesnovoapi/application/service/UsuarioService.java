@@ -25,7 +25,7 @@ public class UsuarioService {
         usuario.setNome(request.getNome());
         usuario.setEmail(request.getEmail());
         usuario.setSenhaHash(request.getSenhaHash());
-        usuario.setRole(Role.valueOf(request.getRole()));
+        usuario.setRole(request.getRole());
         usuario.setConsentimentoLgpd(request.isConsentimentoLgpd());
 
         if (request.isConsentimentoLgpd()) {
@@ -38,7 +38,7 @@ public class UsuarioService {
         response.setId(usuarioSalvo.getId());
         response.setNome(usuarioSalvo.getNome());
         response.setEmail(usuarioSalvo.getEmail());
-        response.setRole(usuarioSalvo.getRole().name());
+        response.setRole(usuarioSalvo.getRole());
         response.setConsentimentoLgpd(usuarioSalvo.isConsentimentoLgpd());
         response.setDataConsentimento(usuarioSalvo.getDataConsentimento());
 
@@ -53,7 +53,7 @@ public class UsuarioService {
             response.setId(usuario.getId());
             response.setNome(usuario.getNome());
             response.setEmail(usuario.getEmail());
-            response.setRole(usuario.getRole().name());
+            response.setRole(usuario.getRole());
             response.setConsentimentoLgpd(usuario.isConsentimentoLgpd());
             response.setDataConsentimento(usuario.getDataConsentimento());
             return response;
@@ -71,7 +71,7 @@ public class UsuarioService {
         response.setId(usuario.getId());
         response.setNome(usuario.getNome());
         response.setEmail(usuario.getEmail());
-        response.setRole(usuario.getRole().name());
+        response.setRole(usuario.getRole());
         response.setConsentimentoLgpd(usuario.isConsentimentoLgpd());
         response.setDataConsentimento(usuario.getDataConsentimento());
 
