@@ -2,6 +2,7 @@ package com.raizesdonordeste.raizesnovoapi.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -10,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Pedido {
@@ -35,7 +37,10 @@ public class Pedido {
     private LocalDateTime criadoEm;
 
     private String cpfNota;
-
+    
+    @OneToMany(mappedBy = "pedido")
+    private List<ItemPedido> itens;
+    
     public Pedido() {
     }
 
@@ -97,5 +102,13 @@ public class Pedido {
 
     public void setCpfNota(String cpfNota) {
         this.cpfNota = cpfNota;
+    }
+    
+    public List<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(List<ItemPedido> itens) {
+        this.itens = itens;
     }
 }

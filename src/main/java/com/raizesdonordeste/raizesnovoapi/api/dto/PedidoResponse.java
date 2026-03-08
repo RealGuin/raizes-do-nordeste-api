@@ -2,6 +2,7 @@ package com.raizesdonordeste.raizesnovoapi.api.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.raizesdonordeste.raizesnovoapi.domain.CanalPedido;
 import com.raizesdonordeste.raizesnovoapi.domain.StatusPedido;
@@ -16,7 +17,8 @@ public class PedidoResponse {
     private BigDecimal valorTotal;
     private LocalDateTime criadoEm;
     private String cpfNota;
-
+    private List<ItemPedidoResponse> itens;
+    
     public PedidoResponse() {
     }
 
@@ -82,5 +84,13 @@ public class PedidoResponse {
 
     public void setCpfNota(String cpfNota) {
         this.cpfNota = cpfNota;
+    }
+    
+    public List<ItemPedidoResponse> getItens() {
+        return itens;
+    }
+
+    public void setItens(List<ItemPedidoResponse> itens) {
+        this.itens = itens;
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.raizesdonordeste.raizesnovoapi.api.dto.ItemPedidoResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.PedidoRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.PedidoResponse;
 import com.raizesdonordeste.raizesnovoapi.domain.Pedido;
@@ -77,6 +78,22 @@ public class PedidoService {
         response.setValorTotal(pedido.getValorTotal());
         response.setCriadoEm(pedido.getCriadoEm());
         response.setCpfNota(pedido.getCpfNota());
+        
+        if (pedido.getItens() != null) {
+            response.setItens(
+                pedido.getItens().stream().map(item -> {
+                    ItemPedidoResponse itemResponse = new ItemPedidoResponse();
+                    itemResponse.setId(item.getId());
+                    itemResponse.setPedidoId(item.getPedido().getId());
+                    itemResponse.setProdutoId(item.getProduto().getId());
+                    itemResponse.setQuantidade(item.getQuantidade());
+                    itemResponse.setPrecoUnitario(item.getPrecoUnitario());
+                    itemResponse.setSubtotal(item.getSubtotal());
+                    return itemResponse;
+                }).toList()
+            );
+        }
+        
         return response;
     }
 }

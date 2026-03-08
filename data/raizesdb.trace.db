@@ -4,3 +4,6 @@ select * from usuarios [42102-240]
 2026-03-07 15:38:52.238353-03:00 jdbc[13]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUTOS" not found; SQL statement:
 select * from produtos [42102-240]
+2026-03-07 23:00:42.823045-03:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM ITEM_PEDIDO PAGAMENTO [*]PEDIDO"; SQL statement:
+SELECT * FROM ITEM_PEDIDO PAGAMENTO PEDIDO [42000-240]
