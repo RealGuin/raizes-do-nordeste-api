@@ -1,10 +1,21 @@
 package com.raizesdonordeste.raizesnovoapi.api.dto;
 
-public class ItemPedidoRequest {
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
+public class ItemPedidoRequest {
+	
+	@NotNull(message = "pedidoId é obrigatório")
+	@Positive(message = "pedidoId deve ser maior que zero")
     private Long pedidoId;
-    private Long produtoId;
-    private int quantidade;
+    
+	@NotNull(message = "produtoId é obrigatório")
+	@Positive(message = "produtoId deve ser maior que zero")
+	private Long produtoId;
+	
+	@NotNull(message = "quantidade é obrigatório")
+	@Positive(message = "quantidade deve ser maior que zero")
+    private Integer quantidade;
 
     public ItemPedidoRequest() {
     }
@@ -25,11 +36,11 @@ public class ItemPedidoRequest {
         this.produtoId = produtoId;
     }
 
-    public int getQuantidade() {
+    public Integer getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
 }

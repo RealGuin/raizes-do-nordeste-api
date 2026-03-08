@@ -2,6 +2,7 @@ package com.raizesdonordeste.raizesnovoapi.api.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeResponse;
 import com.raizesdonordeste.raizesnovoapi.application.service.UnidadeService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/unidades")
@@ -29,13 +33,13 @@ public class UnidadeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UnidadeResponse criar(@RequestBody UnidadeRequest request) {
+    public UnidadeResponse criar(@Valid @RequestBody UnidadeRequest request) {
         return unidadeService.salvar(request);
     }
 
     @GetMapping
-    public List<UnidadeResponse> listar() {
-        return unidadeService.listarTodos();
+    public PaginacaoResponse<UnidadeResponse> listar(Pageable paginacao) {
+        return unidadeService.listar(paginacao);
     }
 
     @GetMapping("/{id}")

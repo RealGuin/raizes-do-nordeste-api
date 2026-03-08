@@ -2,13 +2,29 @@ package com.raizesdonordeste.raizesnovoapi.api.dto;
 
 import java.math.BigDecimal;
 
-public class ProdutoRequest {
+import org.hibernate.validator.constraints.Range;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
+
+public class ProdutoRequest {
+	
+	@NotBlank(message = "Nome do produto é obrigatório")
+	@Pattern(regexp = "^[A-Za-zÀ-ÿ ]+$", message = "Nome deve conter apenas letras")
     private String nome;
-    private BigDecimal precoBase;
-    private boolean produtoAtivo;
+    
+	@NotNull(message = "precoBase é obrigatório")
+	@Positive(message = "Preço deve ser maior que zero")
+	private BigDecimal precoBase;
+    
+	private boolean produtoAtivo;
     private boolean promocaoAtiva;
-    private int descontoPercentual;
+    
+    @NotNull(message = "descontoPercentual é obrigatório")
+    @Range(min = 0, max = 10, message = "descontoPercentual deve estar entre 0 e 10")
+    private Integer descontoPercentual;
 
     public ProdutoRequest() {}
 

@@ -2,6 +2,7 @@ package com.raizesdonordeste.raizesnovoapi.api.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.raizesdonordeste.raizesnovoapi.api.dto.PagamentoRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.PagamentoResponse;
+import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
 import com.raizesdonordeste.raizesnovoapi.application.service.PagamentoService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/pagamentos")
@@ -29,13 +33,13 @@ public class PagamentoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PagamentoResponse criar(@RequestBody PagamentoRequest request) {
+    public PagamentoResponse criar(@Valid @RequestBody PagamentoRequest request) {
         return pagamentoService.salvar(request);
     }
 
     @GetMapping
-    public List<PagamentoResponse> listar() {
-        return pagamentoService.listarTodos();
+    public PaginacaoResponse<PagamentoResponse> listar(Pageable paginacao) {
+        return pagamentoService.listar(paginacao);
     }
     
     @GetMapping("/{id}")

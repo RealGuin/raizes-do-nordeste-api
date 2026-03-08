@@ -2,15 +2,32 @@ package com.raizesdonordeste.raizesnovoapi.api.dto;
 
 import java.math.BigDecimal;
 
+
 import com.raizesdonordeste.raizesnovoapi.domain.CanalPedido;
+
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 
 public class PedidoRequest {
 
-    private Long clienteId;
-    private Long unidadeId;
-    private CanalPedido canalPedido;
+	@NotNull(message = "clienteId é obrigatório")
+	@Positive(message = "clienteId deve ser maior que zero")
+	private Long clienteId;
+	
+	@NotNull(message = "unidadeId é obrigatório")
+	@Positive(message = "unidadeId deve ser maior que zero")
+	private Long unidadeId;
+	
+	@NotNull(message = "canalPedido é obrigatório")
+	private CanalPedido canalPedido;
+	
+	@NotNull(message = "valorTotal é obrigatório")
+	@Positive(message = "valorTotal deve ser maior que zero")
     private BigDecimal valorTotal;
-    private String cpfNota;
+    
+	@Pattern(regexp = "\\d{11}", message = "cpfNota deve conter 11 números")
+	private String cpfNota;
 
     public PedidoRequest() {
     }

@@ -2,6 +2,7 @@ package com.raizesdonordeste.raizesnovoapi.api.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,12 +11,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.PedidoRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.PedidoResponse;
 import com.raizesdonordeste.raizesnovoapi.application.service.PedidoService;
+import com.raizesdonordeste.raizesnovoapi.domain.CanalPedido;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -29,13 +35,15 @@ public class PedidoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PedidoResponse criar(@RequestBody PedidoRequest request) {
+    public PedidoResponse criar(@Valid @RequestBody PedidoRequest request) {
         return pedidoService.salvar(request);
     }
 
     @GetMapping
-    public List<PedidoResponse> listar() {
-        return pedidoService.listarTodos();
+    public PaginacaoResponse<PedidoResponse> listar(
+            Pageable paginacao,
+            @RequestParam(required = false) CanalPedido canalPedido) {
+        return pedidoService.listar(paginacao, canalPedido);
     }
 
     @GetMapping("/{id}")

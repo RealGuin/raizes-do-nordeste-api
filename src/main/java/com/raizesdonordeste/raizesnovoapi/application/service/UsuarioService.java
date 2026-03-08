@@ -1,14 +1,20 @@
 package com.raizesdonordeste.raizesnovoapi.application.service;
 
 import java.time.LocalDateTime;
+
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.UsuarioRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.UsuarioResponse;
+import com.raizesdonordeste.raizesnovoapi.domain.CanalPedido;
 import com.raizesdonordeste.raizesnovoapi.domain.Role;
 import com.raizesdonordeste.raizesnovoapi.domain.Usuario;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.ValidacaoException;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.UsuarioRepository;
 
 @Service
@@ -19,14 +25,28 @@ public class UsuarioService {
     public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
+    
 
     public UsuarioResponse salvar(UsuarioRequest request) {
-        Usuario usuario = new Usuario();
+        
+    	if (request.getRole() == Role.CLIENTE
+    	        && (request.getCanalPedido() == CanalPedido.APP 
+    	        || request.getCanalPedido() == CanalPedido.WEB)
+    	        && !request.isConsentimentoLgpd()) {
+    	    throw new ValidacaoException(
+    	        "Para cadastro de cliente via APP ou WEB, o consentimento LGPD é obrigatório",
+    	        "/usuarios"
+    	    );
+    	}
+    	
+    	Usuario usuario = new Usuario();
         usuario.setNome(request.getNome());
         usuario.setEmail(request.getEmail());
         usuario.setSenhaHash(request.getSenhaHash());
         usuario.setRole(request.getRole());
         usuario.setConsentimentoLgpd(request.isConsentimentoLgpd());
+        
+        
 
         if (request.isConsentimentoLgpd()) {
             usuario.setDataConsentimento(LocalDateTime.now());
@@ -45,19 +65,30 @@ public class UsuarioService {
         return response;
     }
 
-    public List<UsuarioResponse> listarTodos() {
-        List<Usuario> usuarios = usuarioRepository.findAll();
+    public PaginacaoResponse<UsuarioResponse> listar(Pageable paginacao) {
 
-        return usuarios.stream().map(usuario -> {
-            UsuarioResponse response = new UsuarioResponse();
-            response.setId(usuario.getId());
-            response.setNome(usuario.getNome());
-            response.setEmail(usuario.getEmail());
-            response.setRole(usuario.getRole());
-            response.setConsentimentoLgpd(usuario.isConsentimentoLgpd());
-            response.setDataConsentimento(usuario.getDataConsentimento());
-            return response;
-        }).toList();
+        Page<Usuario> paginaUsuarios = usuarioRepository.findAll(paginacao);
+
+        List<UsuarioResponse> itens = paginaUsuarios.getContent().stream()
+                .map(usuario -> {
+                    UsuarioResponse response = new UsuarioResponse();
+                    response.setId(usuario.getId());
+                    response.setNome(usuario.getNome());
+                    response.setEmail(usuario.getEmail());
+                    response.setRole(usuario.getRole());
+                    response.setConsentimentoLgpd(usuario.isConsentimentoLgpd());
+                    response.setDataConsentimento(usuario.getDataConsentimento());
+                    return response;
+                })
+                .toList();
+
+        PaginacaoResponse<UsuarioResponse> response = new PaginacaoResponse<>();
+        response.setItens(itens);
+        response.setPagina(paginaUsuarios.getNumber());
+        response.setTotalPaginas(paginaUsuarios.getTotalPages());
+        response.setTotalItens(paginaUsuarios.getTotalElements());
+
+        return response;
     }
 
     public UsuarioResponse buscarPorId(Long id) {

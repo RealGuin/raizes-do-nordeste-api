@@ -2,10 +2,16 @@ package com.raizesdonordeste.raizesnovoapi.api.dto;
 
 import com.raizesdonordeste.raizesnovoapi.domain.ResultadoPagamento;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 public class PagamentoRequest {
 
-    private Long pedidoId;
-    private ResultadoPagamento resultadoPagamento;
+	@NotNull(message = "pedidoId é obrigatório")
+	@Positive(message = "pedidoId deve ser maior que zero")
+	private Long pedidoId;
+    
+	private ResultadoPagamento resultadoPagamento;
 
     public Long getPedidoId() {
         return pedidoId;
