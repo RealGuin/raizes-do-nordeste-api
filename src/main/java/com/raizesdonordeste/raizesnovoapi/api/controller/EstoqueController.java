@@ -1,9 +1,6 @@
 package com.raizesdonordeste.raizesnovoapi.api.controller;
 
 
-import java.util.List;
-
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.raizesdonordeste.raizesnovoapi.api.dto.EstoqueRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.EstoqueResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
-import com.raizesdonordeste.raizesnovoapi.api.dto.ProdutoResponse;
 import com.raizesdonordeste.raizesnovoapi.application.service.EstoqueService;
 
 import jakarta.validation.Valid;

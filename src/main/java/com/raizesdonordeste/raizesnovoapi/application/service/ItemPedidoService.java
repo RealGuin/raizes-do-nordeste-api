@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.raizesdonordeste.raizesnovoapi.api.dto.ItemPedidoRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.ItemPedidoResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
-import com.raizesdonordeste.raizesnovoapi.api.dto.ProdutoResponse;
 import com.raizesdonordeste.raizesnovoapi.domain.ItemPedido;
 import com.raizesdonordeste.raizesnovoapi.domain.Pedido;
 import com.raizesdonordeste.raizesnovoapi.domain.Produto;
@@ -38,7 +37,7 @@ public class ItemPedidoService {
     public ItemPedidoResponse salvar(ItemPedidoRequest request) {
     	
     	if (request.getQuantidade() == null || request.getQuantidade() <= 0) {
-    	    throw new ValidacaoException("Quantidade deve ser maior que zero", "/itens-pedido");
+    	    throw new ValidacaoException("Quantidade deve ser maior que zero");
     	}
 
         Pedido pedido = pedidoRepository.findById(request.getPedidoId()).orElse(null);

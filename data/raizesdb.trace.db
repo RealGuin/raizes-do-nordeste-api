@@ -7,3 +7,12 @@ select * from produtos [42102-240]
 2026-03-07 23:00:42.823045-03:00 jdbc[13]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM ITEM_PEDIDO PAGAMENTO [*]PEDIDO"; SQL statement:
 SELECT * FROM ITEM_PEDIDO PAGAMENTO PEDIDO [42000-240]
+2026-03-10 17:05:20.198051-03:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM USUARIO PEDIDO [*]USUARIO"; SQL statement:
+SELECT * FROM USUARIO PEDIDO USUARIO [42000-240]
+2026-03-10 17:05:36.725093-03:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "USUARIOPEDIDO" not found; SQL statement:
+SELECT * FROM USUARIOPEDIDO [42102-240]
+2026-03-10 17:09:11.955708-03:00 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM USUARIO PEDIDO [*]PAGAMENTO"; SQL statement:
+SELECT * FROM USUARIO PEDIDO PAGAMENTO [42000-240]

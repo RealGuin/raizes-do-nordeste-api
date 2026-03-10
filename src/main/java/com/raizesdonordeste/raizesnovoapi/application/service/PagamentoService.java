@@ -1,11 +1,15 @@
 package com.raizesdonordeste.raizesnovoapi.application.service;
 
 import java.time.LocalDateTime;
+
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.raizesdonordeste.raizesnovoapi.api.dto.PagamentoRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.PagamentoResponse;
@@ -26,6 +30,7 @@ public class PagamentoService {
     private final PagamentoRepository pagamentoRepository;
     private final PedidoRepository pedidoRepository;
     private final MockPagamentoGateway mockPagamentoGateway;
+    private static final Logger log = LoggerFactory.getLogger(PagamentoService.class);
 
     public PagamentoService(PagamentoRepository pagamentoRepository,
                             PedidoRepository pedidoRepository,
@@ -47,8 +52,7 @@ public class PagamentoService {
         
         if (pedido.getStatusPedido() == StatusPedido.PAGO) {
         	throw new ConflictException(
-                "Este pedido já foi pago",
-                "/pagamentos"
+                "Este pedido já foi pago"
             );
         }
         
@@ -67,6 +71,10 @@ public class PagamentoService {
         }
 
         Pagamento salvo = pagamentoRepository.save(pagamento);
+        
+        log.info("Pagamento processado - pedidoId={}, resultado={}",
+                pagamento.getPedido().getId(),
+                pagamento.getResultadoPagamento());
 
         PagamentoResponse response = new PagamentoResponse();
         response.setId(salvo.getId());

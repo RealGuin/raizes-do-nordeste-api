@@ -1,11 +1,15 @@
 package com.raizesdonordeste.raizesnovoapi.application.service;
 
 import java.time.LocalDateTime;
+
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.raizesdonordeste.raizesnovoapi.api.dto.ItemPedidoResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
@@ -27,6 +31,7 @@ public class PedidoService {
     private final PedidoRepository pedidoRepository;
     private final UsuarioRepository usuarioRepository;
     private final UnidadeRepository unidadeRepository;
+    private static final Logger log = LoggerFactory.getLogger(PedidoService.class);
 
     public PedidoService(PedidoRepository pedidoRepository,
                          UsuarioRepository usuarioRepository,
@@ -59,6 +64,12 @@ public class PedidoService {
         pedido.setCpfNota(request.getCpfNota());
 
         Pedido pedidoSalvo = pedidoRepository.save(pedido);
+        
+        log.info("Pedido criado - id={}, clienteId={}, canal={}, valorTotal={}",
+                pedidoSalvo.getId(),
+                cliente.getId(),
+                pedidoSalvo.getCanalPedido(),
+                pedidoSalvo.getValorTotal());
         
         return toResponse(pedidoSalvo);
     	
