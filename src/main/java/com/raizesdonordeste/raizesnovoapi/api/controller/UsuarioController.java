@@ -1,7 +1,6 @@
 package com.raizesdonordeste.raizesnovoapi.api.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,9 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.UsuarioRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.UsuarioResponse;
 import com.raizesdonordeste.raizesnovoapi.application.service.UsuarioService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -29,13 +31,13 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UsuarioResponse criar(@RequestBody UsuarioRequest request) {
+    public UsuarioResponse criar(@Valid @RequestBody UsuarioRequest request) {
         return usuarioService.salvar(request);
     }
 
     @GetMapping
-    public List<UsuarioResponse> listar() {
-        return usuarioService.listarTodos();
+    public PaginacaoResponse<UsuarioResponse> listar(Pageable paginacao) {
+        return usuarioService.listar(paginacao);
     }
 
     @GetMapping("/{id}")

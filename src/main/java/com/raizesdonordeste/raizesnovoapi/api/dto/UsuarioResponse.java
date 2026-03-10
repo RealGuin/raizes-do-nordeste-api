@@ -2,12 +2,14 @@ package com.raizesdonordeste.raizesnovoapi.api.dto;
 
 import java.time.LocalDateTime;
 
+import com.raizesdonordeste.raizesnovoapi.domain.Role;
+
 public class UsuarioResponse {
 
     private Long id;
     private String nome;
     private String email;
-    private String role;
+    private Role role;
     private boolean consentimentoLgpd;
     private LocalDateTime dataConsentimento;
 
@@ -38,11 +40,11 @@ public class UsuarioResponse {
         this.email = email;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 

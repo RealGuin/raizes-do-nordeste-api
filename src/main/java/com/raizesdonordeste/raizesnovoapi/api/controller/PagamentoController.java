@@ -12,48 +12,49 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.raizesdonordeste.raizesnovoapi.api.dto.PagamentoRequest;
+import com.raizesdonordeste.raizesnovoapi.api.dto.PagamentoResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
-import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeRequest;
-import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeResponse;
-import com.raizesdonordeste.raizesnovoapi.application.service.UnidadeService;
+import com.raizesdonordeste.raizesnovoapi.application.service.PagamentoService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/unidades")
-public class UnidadeController {
+@RequestMapping("/pagamentos")
+public class PagamentoController {
 
-    private final UnidadeService unidadeService;
+    private final PagamentoService pagamentoService;
 
-    public UnidadeController(UnidadeService unidadeService) {
-        this.unidadeService = unidadeService;
+    public PagamentoController(PagamentoService pagamentoService) {
+        this.pagamentoService = pagamentoService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UnidadeResponse criar(@Valid @RequestBody UnidadeRequest request) {
-        return unidadeService.salvar(request);
+    public PagamentoResponse criar(@Valid @RequestBody PagamentoRequest request) {
+        return pagamentoService.salvar(request);
     }
 
     @GetMapping
-    public PaginacaoResponse<UnidadeResponse> listar(Pageable paginacao) {
-        return unidadeService.listar(paginacao);
+    public PaginacaoResponse<PagamentoResponse> listar(Pageable paginacao) {
+        return pagamentoService.listar(paginacao);
     }
-
+    
     @GetMapping("/{id}")
-    public ResponseEntity<UnidadeResponse> buscarPorId(@PathVariable Long id) {
-        UnidadeResponse unidade = unidadeService.buscarPorId(id);
+    public ResponseEntity<PagamentoResponse> buscarPorId(@PathVariable Long id) {
 
-        if (unidade == null) {
+        PagamentoResponse pagamento = pagamentoService.buscarPorId(id);
+
+        if (pagamento == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(unidade);
+        return ResponseEntity.ok(pagamento);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long id) {
-        unidadeService.deletarPorId(id);
+        pagamentoService.deletarPorId(id);
     }
 }

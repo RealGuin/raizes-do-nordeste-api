@@ -2,8 +2,11 @@ package com.raizesdonordeste.raizesnovoapi.application.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeResponse;
 import com.raizesdonordeste.raizesnovoapi.domain.Unidade;
@@ -33,24 +36,31 @@ public class UnidadeService {
         return response;
     }
 
-    public List<UnidadeResponse> listarTodos() {
-        List<Unidade> unidades = unidadeRepository.findAll();
+    public PaginacaoResponse<UnidadeResponse> listar(Pageable paginacao) {
 
-        return unidades.stream().map(unidade -> {
-            UnidadeResponse response = new UnidadeResponse();
-            response.setId(unidade.getId());
-            response.setNome(unidade.getNome());
-            response.setAtiva(unidade.isAtiva());
-            return response;
-        }).toList();
+        Page<Unidade> paginaUnidades = unidadeRepository.findAll(paginacao);
+
+        List<UnidadeResponse> itens = paginaUnidades.getContent().stream()
+                .map(unidade -> {
+                    UnidadeResponse response = new UnidadeResponse();
+                    response.setId(unidade.getId());
+                    response.setNome(unidade.getNome());
+                    response.setAtiva(unidade.isAtiva());
+                    return response;
+                })
+                .toList();
+
+        PaginacaoResponse<UnidadeResponse> response = new PaginacaoResponse<>();
+        response.setItens(itens);
+        response.setPagina(paginaUnidades.getNumber());
+        response.setTotalPaginas(paginaUnidades.getTotalPages());
+        response.setTotalItens(paginaUnidades.getTotalElements());
+
+        return response;
     }
 
     public UnidadeResponse buscarPorId(Long id) {
         Unidade unidade = unidadeRepository.findById(id).orElse(null);
-
-        if (unidade == null) {
-            return null;
-        }
 
         UnidadeResponse response = new UnidadeResponse();
         response.setId(unidade.getId());

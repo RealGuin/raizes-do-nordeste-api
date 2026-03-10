@@ -1,5 +1,6 @@
 package com.raizesdonordeste.raizesnovoapi.api.controller;
 
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,48 +13,48 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.raizesdonordeste.raizesnovoapi.api.dto.EstoqueRequest;
+import com.raizesdonordeste.raizesnovoapi.api.dto.EstoqueResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
-import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeRequest;
-import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeResponse;
-import com.raizesdonordeste.raizesnovoapi.application.service.UnidadeService;
+import com.raizesdonordeste.raizesnovoapi.application.service.EstoqueService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/unidades")
-public class UnidadeController {
+@RequestMapping("/estoques")
+public class EstoqueController {
 
-    private final UnidadeService unidadeService;
+    private final EstoqueService estoqueService;
 
-    public UnidadeController(UnidadeService unidadeService) {
-        this.unidadeService = unidadeService;
+    public EstoqueController(EstoqueService estoqueService) {
+        this.estoqueService = estoqueService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UnidadeResponse criar(@Valid @RequestBody UnidadeRequest request) {
-        return unidadeService.salvar(request);
+    public EstoqueResponse criar(@Valid @RequestBody EstoqueRequest request) {
+        return estoqueService.salvar(request);
     }
 
     @GetMapping
-    public PaginacaoResponse<UnidadeResponse> listar(Pageable paginacao) {
-        return unidadeService.listar(paginacao);
+    public PaginacaoResponse<EstoqueResponse> listar(Pageable paginacao) {
+        return estoqueService.listar(paginacao);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UnidadeResponse> buscarPorId(@PathVariable Long id) {
-        UnidadeResponse unidade = unidadeService.buscarPorId(id);
+    public ResponseEntity<EstoqueResponse> buscarPorId(@PathVariable Long id) {
+        EstoqueResponse estoque = estoqueService.buscarPorId(id);
 
-        if (unidade == null) {
+        if (estoque == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(unidade);
+        return ResponseEntity.ok(estoque);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long id) {
-        unidadeService.deletarPorId(id);
+        estoqueService.deletarPorId(id);
     }
 }

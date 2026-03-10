@@ -12,48 +12,49 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.raizesdonordeste.raizesnovoapi.api.dto.ItemPedidoRequest;
+import com.raizesdonordeste.raizesnovoapi.api.dto.ItemPedidoResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
-import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeRequest;
-import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeResponse;
-import com.raizesdonordeste.raizesnovoapi.application.service.UnidadeService;
+import com.raizesdonordeste.raizesnovoapi.application.service.ItemPedidoService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/unidades")
-public class UnidadeController {
+@RequestMapping("/itens-pedido")
+public class ItemPedidoController {
 
-    private final UnidadeService unidadeService;
+    private final ItemPedidoService itemPedidoService;
 
-    public UnidadeController(UnidadeService unidadeService) {
-        this.unidadeService = unidadeService;
+    public ItemPedidoController(ItemPedidoService itemPedidoService) {
+        this.itemPedidoService = itemPedidoService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UnidadeResponse criar(@Valid @RequestBody UnidadeRequest request) {
-        return unidadeService.salvar(request);
+    public ItemPedidoResponse criar(@Valid @RequestBody ItemPedidoRequest request) {
+        return itemPedidoService.salvar(request);
     }
 
     @GetMapping
-    public PaginacaoResponse<UnidadeResponse> listar(Pageable paginacao) {
-        return unidadeService.listar(paginacao);
+    public PaginacaoResponse<ItemPedidoResponse> listar(Pageable paginacao) {
+        return itemPedidoService.listar(paginacao);
     }
-
+    
     @GetMapping("/{id}")
-    public ResponseEntity<UnidadeResponse> buscarPorId(@PathVariable Long id) {
-        UnidadeResponse unidade = unidadeService.buscarPorId(id);
+    public ResponseEntity<ItemPedidoResponse> buscarPorId(@PathVariable Long id) {
 
-        if (unidade == null) {
+        ItemPedidoResponse item = itemPedidoService.buscarPorId(id);
+
+        if (item == null) {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(unidade);
+        return ResponseEntity.ok(item);
     }
-
+    
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable Long id) {
-        unidadeService.deletarPorId(id);
+        itemPedidoService.deletarPorId(id);
     }
 }

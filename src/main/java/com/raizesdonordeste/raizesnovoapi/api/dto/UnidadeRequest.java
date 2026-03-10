@@ -1,8 +1,14 @@
 package com.raizesdonordeste.raizesnovoapi.api.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 public class UnidadeRequest {
 
-    private String nome;
+	@NotBlank(message = "Nome é obrigatório")
+    @Pattern(regexp = "^[A-Za-zÀ-ÿ ]+$", message = "Nome deve conter apenas letras")
+	private String nome;
+	
     private boolean ativa;
 
     public UnidadeRequest() {
