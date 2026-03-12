@@ -10,6 +10,7 @@ import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeResponse;
 import com.raizesdonordeste.raizesnovoapi.domain.Unidade;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.RecursoNaoEncontradoException;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.UnidadeRepository;
 
 @Service
@@ -60,7 +61,8 @@ public class UnidadeService {
     }
 
     public UnidadeResponse buscarPorId(Long id) {
-        Unidade unidade = unidadeRepository.findById(id).orElse(null);
+        Unidade unidade = unidadeRepository.findById(id)
+        		.orElseThrow(() -> new RecursoNaoEncontradoException("Unidade não encontrada."));
 
         UnidadeResponse response = new UnidadeResponse();
         response.setId(unidade.getId());

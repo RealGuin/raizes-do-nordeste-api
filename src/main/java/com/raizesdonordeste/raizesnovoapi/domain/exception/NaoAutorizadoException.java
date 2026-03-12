@@ -1,10 +1,10 @@
 package com.raizesdonordeste.raizesnovoapi.domain.exception;
 
-public class UnauthorizedException extends RuntimeException {
+public class NaoAutorizadoException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 
-	public UnauthorizedException(String message) {
+	public NaoAutorizadoException(String message) {
         super(message);
     }
 }

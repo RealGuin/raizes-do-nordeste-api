@@ -18,7 +18,7 @@ import com.raizesdonordeste.raizesnovoapi.domain.Pagamento;
 import com.raizesdonordeste.raizesnovoapi.domain.Pedido;
 import com.raizesdonordeste.raizesnovoapi.domain.ResultadoPagamento;
 import com.raizesdonordeste.raizesnovoapi.domain.StatusPedido;
-import com.raizesdonordeste.raizesnovoapi.domain.exception.ConflictException;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.ConflitoException;
 import com.raizesdonordeste.raizesnovoapi.domain.exception.RecursoNaoEncontradoException;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.mock.MockPagamentoGateway;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.PagamentoRepository;
@@ -51,7 +51,7 @@ public class PagamentoService {
         }
         
         if (pedido.getStatusPedido() == StatusPedido.PAGO) {
-        	throw new ConflictException(
+        	throw new ConflitoException(
                 "Este pedido já foi pago"
             );
         }
@@ -111,11 +111,8 @@ public class PagamentoService {
 
     public PagamentoResponse buscarPorId(Long id) {
 
-        Pagamento pagamento = pagamentoRepository.findById(id).orElse(null);
-
-        if (pagamento == null) {
-            return null;
-        }
+        Pagamento pagamento = pagamentoRepository.findById(id)
+        		.orElseThrow(() -> new RecursoNaoEncontradoException("Pagamento não encontrado."));
 
         PagamentoResponse response = new PagamentoResponse();
         response.setId(pagamento.getId());

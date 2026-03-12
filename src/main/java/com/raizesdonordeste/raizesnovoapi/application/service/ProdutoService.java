@@ -10,6 +10,7 @@ import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.ProdutoRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.ProdutoResponse;
 import com.raizesdonordeste.raizesnovoapi.domain.Produto;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.RecursoNaoEncontradoException;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.ProdutoRepository;
 
 @Service
@@ -70,11 +71,8 @@ public class ProdutoService {
     }
 
     public ProdutoResponse buscarPorId(Long id) {
-        Produto produto = produtoRepository.findById(id).orElse(null);
-
-        if (produto == null) {
-            return null;
-        }
+        Produto produto = produtoRepository.findById(id)
+        		.orElseThrow(() -> new RecursoNaoEncontradoException("Produto não encontrado."));
 
         ProdutoResponse response = new ProdutoResponse();
         response.setId(produto.getId());

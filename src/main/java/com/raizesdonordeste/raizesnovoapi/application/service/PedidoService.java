@@ -1,5 +1,6 @@
 package com.raizesdonordeste.raizesnovoapi.application.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import java.util.List;
@@ -59,7 +60,7 @@ public class PedidoService {
         pedido.setUnidade(unidade);
         pedido.setCanalPedido(request.getCanalPedido());
         pedido.setStatusPedido(StatusPedido.AGUARDANDO_PAGAMENTO);
-        pedido.setValorTotal(request.getValorTotal());
+        pedido.setValorTotal(BigDecimal.ZERO);
         pedido.setCriadoEm(LocalDateTime.now());
         pedido.setCpfNota(request.getCpfNota());
 
@@ -99,10 +100,9 @@ public class PedidoService {
     }
 
     public PedidoResponse buscarPorId(Long id) {
-        Pedido pedido = pedidoRepository.findById(id).orElse(null);
-        if (pedido == null) {
-            return null;
-        }
+        Pedido pedido = pedidoRepository.findById(id)
+        		.orElseThrow(() -> new RecursoNaoEncontradoException("Pedido não encontrado."));
+        
         return toResponse(pedido);
     }
 

@@ -1,11 +1,13 @@
 package com.raizesdonordeste.raizesnovoapi.api.dto;
 
+import com.raizesdonordeste.raizesnovoapi.domain.Role;
+
 public class LoginResponse {
 
 	private Long id;
     private String token;
     private String tipo;
-    private String role;
+    private Role role;
     
     
     public Long getId() {
@@ -32,11 +34,11 @@ public class LoginResponse {
         this.tipo = tipo;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
     

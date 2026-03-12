@@ -19,7 +19,7 @@ public class UsuarioRequest {
 	private String email;
     
 	@NotBlank(message = "Senha é obrigatória")
-	private String senhaHash;
+	private String senha;
     
 	@NotNull(message = "Role é obrigatória")
 	private Role role;
@@ -46,12 +46,12 @@ public class UsuarioRequest {
         this.email = email;
     }
 
-    public String getSenhaHash() {
-        return senhaHash;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setSenhaHash(String senhaHash) {
-        this.senhaHash = senhaHash;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public Role getRole() {

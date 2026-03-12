@@ -3,6 +3,7 @@ package com.raizesdonordeste.raizesnovoapi.api.exception;
 import jakarta.servlet.http.HttpServletRequest;
 
 
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -10,9 +11,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.raizesdonordeste.raizesnovoapi.domain.exception.ConflictException;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.ConflitoException;
 import com.raizesdonordeste.raizesnovoapi.domain.exception.RecursoNaoEncontradoException;
-import com.raizesdonordeste.raizesnovoapi.domain.exception.UnauthorizedException;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.NaoAutorizadoException;
 import com.raizesdonordeste.raizesnovoapi.domain.exception.ValidacaoException;
 
 @RestControllerAdvice
@@ -41,7 +42,7 @@ public class ApiExceptionHandler {
         ErrorResponse problem = new ErrorResponse();
 
         problem.setType("https://api.raizesdonordeste.com/errors/validation-error");
-        problem.setTitle("Validation Error");
+        problem.setTitle("Erro de validação");
         problem.setStatus(HttpStatus.UNPROCESSABLE_CONTENT.value());
         problem.setDetail(ex.getMessage());
         problem.setInstance(request.getRequestURI());
@@ -64,7 +65,7 @@ public class ApiExceptionHandler {
         ErrorResponse problem = new ErrorResponse();
 
         problem.setType("https://api.raizesdonordeste.com/errors/validation-error");
-        problem.setTitle("Validation Error");
+        problem.setTitle("Erro de validação");
         problem.setStatus(HttpStatus.UNPROCESSABLE_CONTENT.value());
         problem.setDetail(mensagem);
         problem.setInstance(request.getRequestURI());
@@ -80,7 +81,7 @@ public class ApiExceptionHandler {
         ErrorResponse problem = new ErrorResponse();
 
         problem.setType("https://api.raizesdonordeste.com/errors/bad-request");
-        problem.setTitle("Bad Request");
+        problem.setTitle("Requisição inválida");
         problem.setStatus(HttpStatus.BAD_REQUEST.value());
         problem.setDetail("Requisição inválida ou campo com formato incorreto.");
         problem.setInstance(request.getRequestURI());
@@ -88,15 +89,15 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(problem);
     }
     
-    @ExceptionHandler(ConflictException.class)
+    @ExceptionHandler(ConflitoException.class)
     public ResponseEntity<ErrorResponse> handleConflict(
-            ConflictException ex,
+            ConflitoException ex,
             HttpServletRequest request) {
 
         ErrorResponse problem = new ErrorResponse();
 
         problem.setType("https://api.raizesdonordeste.com/errors/conflict");
-        problem.setTitle("Conflict");
+        problem.setTitle("Conflito");
         problem.setStatus(HttpStatus.CONFLICT.value());
         problem.setDetail(ex.getMessage());
         problem.setInstance(request.getRequestURI());
@@ -104,15 +105,15 @@ public class ApiExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(problem);
     }
     
-    @ExceptionHandler(UnauthorizedException.class)
+    @ExceptionHandler(NaoAutorizadoException.class)
     public ResponseEntity<ErrorResponse> handleUnauthorized(
-            UnauthorizedException ex,
+            NaoAutorizadoException ex,
             HttpServletRequest request) {
 
         ErrorResponse problem = new ErrorResponse();
 
         problem.setType("https://api.raizesdonordeste.com/errors/unauthorized");
-        problem.setTitle("Unauthorized");
+        problem.setTitle("Não autorizado");
         problem.setStatus(HttpStatus.UNAUTHORIZED.value());
         problem.setDetail(ex.getMessage());
         problem.setInstance(request.getRequestURI());

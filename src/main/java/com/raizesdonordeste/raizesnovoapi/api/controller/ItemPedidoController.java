@@ -2,7 +2,6 @@ package com.raizesdonordeste.raizesnovoapi.api.controller;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,15 +40,8 @@ public class ItemPedidoController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<ItemPedidoResponse> buscarPorId(@PathVariable Long id) {
-
-        ItemPedidoResponse item = itemPedidoService.buscarPorId(id);
-
-        if (item == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(item);
+    public ItemPedidoResponse buscarPorId(@PathVariable Long id) {
+    	return itemPedidoService.buscarPorId(id);
     }
     
     @DeleteMapping("/{id}")
