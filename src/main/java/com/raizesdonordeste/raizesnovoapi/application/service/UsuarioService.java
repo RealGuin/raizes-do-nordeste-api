@@ -57,7 +57,7 @@ public class UsuarioService {
     	Usuario usuario = new Usuario();
         usuario.setNome(request.getNome());
         usuario.setEmail(request.getEmail());
-        usuario.setSenhaHash(passwordEncoder.encode(request.getSenha()));
+        usuario.setSenha(passwordEncoder.encode(request.getSenha()));
         usuario.setRole(request.getRole());
         usuario.setConsentimentoLgpd(request.isConsentimentoLgpd());
         

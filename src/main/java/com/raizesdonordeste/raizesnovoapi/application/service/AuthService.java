@@ -34,7 +34,7 @@ public class AuthService {
     	Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
     	        .orElseThrow(() -> new NaoAutorizadoException("Email ou senha inválidos"));
 
-    	boolean senhaCorreta = passwordEncoder.matches(request.getSenha(), usuario.getSenhaHash());
+    	boolean senhaCorreta = passwordEncoder.matches(request.getSenha(), usuario.getSenha());
 
     	if (!senhaCorreta) {
     	    throw new NaoAutorizadoException("Email ou senha inválidos");
