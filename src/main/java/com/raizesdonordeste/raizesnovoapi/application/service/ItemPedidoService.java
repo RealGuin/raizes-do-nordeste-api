@@ -13,6 +13,7 @@ import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
 import com.raizesdonordeste.raizesnovoapi.domain.ItemPedido;
 import com.raizesdonordeste.raizesnovoapi.domain.Pedido;
 import com.raizesdonordeste.raizesnovoapi.domain.Produto;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.ConflitoException;
 import com.raizesdonordeste.raizesnovoapi.domain.exception.RecursoNaoEncontradoException;
 import com.raizesdonordeste.raizesnovoapi.domain.exception.ValidacaoException;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.ItemPedidoRepository;
@@ -49,6 +50,10 @@ public class ItemPedidoService {
 
         if (produto == null) {
             throw new RecursoNaoEncontradoException("Produto não encontrado.");
+        }
+        
+        if (!produto.isProdutoAtivo()) {
+            throw new ConflitoException("Produto inativo não pode ser adicionado ao pedido.");
         }
 
         ItemPedido item = new ItemPedido();

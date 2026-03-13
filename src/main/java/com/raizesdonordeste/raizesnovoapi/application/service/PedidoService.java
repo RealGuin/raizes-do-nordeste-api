@@ -21,6 +21,7 @@ import com.raizesdonordeste.raizesnovoapi.domain.Pedido;
 import com.raizesdonordeste.raizesnovoapi.domain.StatusPedido;
 import com.raizesdonordeste.raizesnovoapi.domain.Unidade;
 import com.raizesdonordeste.raizesnovoapi.domain.Usuario;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.ConflitoException;
 import com.raizesdonordeste.raizesnovoapi.domain.exception.RecursoNaoEncontradoException;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.PedidoRepository;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.UnidadeRepository;
@@ -53,6 +54,10 @@ public class PedidoService {
 
         if (unidade == null) {
             throw new RecursoNaoEncontradoException("Unidade não encontrada.");
+        }
+        
+        if (!unidade.isAtiva()) {
+            throw new ConflitoException("Unidade inativa não pode receber pedidos.");
         }
 
         Pedido pedido = new Pedido();

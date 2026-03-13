@@ -10,6 +10,7 @@ import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.UnidadeResponse;
 import com.raizesdonordeste.raizesnovoapi.domain.Unidade;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.ConflitoException;
 import com.raizesdonordeste.raizesnovoapi.domain.exception.RecursoNaoEncontradoException;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.UnidadeRepository;
 
@@ -23,7 +24,12 @@ public class UnidadeService {
     }
 
     public UnidadeResponse salvar(UnidadeRequest request) {
-        Unidade unidade = new Unidade();
+        
+    	if (unidadeRepository.existsByNome(request.getNome())) {
+    	    throw new ConflitoException("Já existe uma unidade cadastrada com esse nome.");
+    	}
+    	
+    	Unidade unidade = new Unidade();
         unidade.setNome(request.getNome());
         unidade.setAtiva(request.isAtiva());
 

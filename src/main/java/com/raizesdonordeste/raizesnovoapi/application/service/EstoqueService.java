@@ -39,6 +39,14 @@ public class EstoqueService {
         Unidade unidade = unidadeRepository.findById(request.getUnidadeId()).orElse(null);
         Produto produto = produtoRepository.findById(request.getProdutoId()).orElse(null);
 
+        if (unidade == null) {
+            throw new RecursoNaoEncontradoException("Unidade não encontrada.");
+        }
+        
+        if (produto == null) {
+            throw new RecursoNaoEncontradoException("Produto não encontrado.");
+        }
+        
         Estoque estoque = estoqueRepository.findByUnidadeIdAndProdutoId(
                 request.getUnidadeId(),
                 request.getProdutoId()

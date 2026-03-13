@@ -2,6 +2,7 @@
   "info": {
     "_postman_id": "1b685c5d-2589-4caf-bde9-adcb51a51566",
     "name": "Raizes do Nordeste API - Testes",
+    "description": "# Raizes do Nordeste API - Testes\n\n## Visão Geral\n\nEste conjunto abrangente de testes valida a funcionalidade e o tratamento de erros da API Raizes do Nordeste, cobrindo fluxos de usuário críticos e casos de borda em múltiplos endpoints.\n\n## Cenários de Teste\n\nA coleção inclui casos de teste para:\n\n- Gestão de Usuários\n    \n    - Registro de usuário bem-sucedido\n        \n    - Validação de registro (campos ausentes, conformidade LGPD)\n        \n    - Autenticação de usuário e geração de token JWT\n        \n- Gestão de Pedidos\n    \n    - Criação de pedidos em diferentes canais (APP, TOTEM)\n        \n    - Adição de itens ao pedido\n        \n    - Tratamento de pedidos com unidades inválidas\n        \n    - Listagem e filtragem de pedidos\n        \n- Processamento de Pagamentos\n    \n    - Criação de pagamentos\n        \n    - Tratamento de cenários de pagamento (sucesso, duplicidade, recusa)\n        \n- Gestão de Unidades e Produtos\n    \n    - Criação de unidades e produtos\n        \n    - Listagem de recursos\n        \n\n## Estratégias-Chave de Teste\n\n- Cobre diversos códigos de status HTTP (200 OK, 201 Criado, 400 Requisição Inválida, 401 Não Autorizado, 404 Não Encontrado, 409 Conflito, 422 Erro de validação)\n    \n- Testa cenários positivos e negativos\n    \n- Valida estruturas de resposta da API e mensagens de erro\n    \n\n## Propósito\n\nGarantir a confiabilidade, funcionalidade e robustez da API Raizes do Nordeste, testando sistematicamente seus recursos principais e mecanismos de tratamento de erros.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "48617643"
   },
@@ -132,7 +133,7 @@
                 "usuarios"
               ]
             },
-            "description": "**Cenário:** Cadastro sem campo preenchido\n\n**Endpoint:** POST /usuarios\n\n**Pré-condição:** nenhuma\n\n**Entrada:**\n\n{ \"canalPedido\": \"APP\",\n\n\"nome\": \"Guilherme\",\n\n\"email\": \"gui@email.com\",\n\n\"senha\": \"1234\",\n\n\"role\": \"\", -> (vazio)\n\n\"consentimentoLgpd\": true}\n\n**Esperado:**\n\n{\n\n\"detail\": \"Requisição inválida ou campo com formato incorreto.\",\n\n\"instance\": \"/usuarios\",\n\n\"status\": 400,\n\n\"title\": \"Requisição inválida\",\n\n\"type\": \"https://api.raizesdonordeste.com/errors/bad-request\"\n\n}\n\n**Evidência:** T04 - Cadastro sem campo preenchido (400)"
+            "description": "**Cenário:** Cadastro sem campo preenchido\n\n**Endpoint:** POST /usuarios\n\n**Pré-condição:** Nenhuma\n\n**Entrada:**\n\n{ \"canalPedido\": \"APP\",\n\n\"nome\": \"Guilherme\",\n\n\"email\": \"[gui@email.com](https://mailto:gui@email.com)\",\n\n\"senha\": \"1234\",\n\n\"role\": \"\", -> (vazio)\n\n\"consentimentoLgpd\": true}\n\n**Esperado:**\n\n{\n\n\"detail\": \"Requisição inválida ou campo com formato incorreto.\",\n\n\"instance\": \"/usuarios\",\n\n\"status\": 400,\n\n\"title\": \"Requisição inválida\",\n\n\"type\": \"[https://api.raizesdonordeste.com/errors/bad-request\"](https://api.raizesdonordeste.com/errors/bad-request)\n\n}\n\n**Evidência:** T04 - Cadastro sem campo preenchido (400)"
           },
           "response": []
         },
@@ -163,7 +164,7 @@
                 "login"
               ]
             },
-            "description": "**Cenário:** Login válido com geração de token\n\n**Endpoint:** POST /auth/login\n\n**Pré-condição:** Estar cadastrado\n\n**Entrada:**\n\n{\n\n\"email\": \"[gui@email.com](https://mailto:gui@email.com)\",\n\n\"senha\": \"1234\"\n\n}\n\n**Esperado:**\n\n200 OK\n\n{\n\n\"id\": 1,\n\n\"role\": \"CLIENTE\",\n\n\"tipo\": \"Bearer\",\n\n\"token\": \"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJndWlAZW1haWwuY29tIiwicm9sZSI6IkNMSUVOVEUiLCJpYXQiOjE3NzMyMzM5MTcsImV4cCI6MTc3MzIzNzUxN30.THknK-i6ycLUOwoTzIqsVUNkefj01ZMxr2Qvedc69mXCJOMJV3saveaxBeAusDI2\"\n\n}\n\n**Evidência:** T05 - Login válido com geração de token JWT (200)"
+            "description": "**Cenário:** Login válido com geração de token\n\n**Endpoint:** POST /auth/login\n\n**Pré-condição:** Usuário estar cadastrado\n\n**Entrada:**\n\n{\n\n\"email\": \"[gui@email.com](https://mailto:gui@email.com)\",\n\n\"senha\": \"1234\"\n\n}\n\n**Esperado:**\n\n200 OK\n\n{\n\n\"id\": 1,\n\n\"role\": \"CLIENTE\",\n\n\"tipo\": \"Bearer\",\n\n\"token\": \"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJndWlAZW1haWwuY29tIiwicm9sZSI6IkNMSUVOVEUiLCJpYXQiOjE3NzMyMzM5MTcsImV4cCI6MTc3MzIzNzUxN30.THknK-i6ycLUOwoTzIqsVUNkefj01ZMxr2Qvedc69mXCJOMJV3saveaxBeAusDI2\"\n\n}\n\n**Evidência:** T05 - Login válido com geração de token JWT (200)"
           },
           "response": []
         },
@@ -194,7 +195,7 @@
                 "login"
               ]
             },
-            "description": "**Cenário:** Login inválido\n\n**Endpoint:** POST /auth/login\n\n**Pré-condição:** Não estar cadastrado\n\n**Entrada:**\n\n{\n\n\"email\": \"[joao@email.com](https://mailto:joao@email.com)\",\n\n\"senha\": \"1234\"\n\n}\n\n**Esperado:**\n\n{\n\n\"detail\": \"Email ou senha inválidos\",\n\n\"instance\": \"/auth/login\",\n\n\"status\": 401,\n\n\"title\": \"Não autorizado\",\n\n\"type\": \"[https://api.raizesdonordeste.com/errors/unauthorized\"](https://api.raizesdonordeste.com/errors/unauthorized)\n\n}\n\n**Evidência:** T06 - Login inválido (401)"
+            "description": "**Cenário:** Login inválido\n\n**Endpoint:** POST /auth/login\n\n**Pré-condição:** Usuário não estar cadastrado\n\n**Entrada:**\n\n{\n\n\"email\": \"[joao@email.com](https://mailto:joao@email.com)\",\n\n\"senha\": \"1234\"\n\n}\n\n**Esperado:**\n\n{\n\n\"detail\": \"Email ou senha inválidos\",\n\n\"instance\": \"/auth/login\",\n\n\"status\": 401,\n\n\"title\": \"Não autorizado\",\n\n\"type\": \"[https://api.raizesdonordeste.com/errors/unauthorized\"](https://api.raizesdonordeste.com/errors/unauthorized)\n\n}\n\n**Evidência:** T06 - Login inválido (401)"
           },
           "response": []
         },
@@ -219,7 +220,7 @@
                 "usuarios"
               ]
             },
-            "description": "**Cenário:** Listar usuários\n\n**Endpoint:** GET /usuarios\n\n**Pré-condição:** Ter ao menos um usuário cadastrado\n\n**Entrada:**\n\n**Esperado:**\n\n200 OK\n\n{\n\n\"itens\": \\[\n\n{\n\n\"consentimentoLgpd\": true,\n\n\"dataConsentimento\": \"2026-03-10T21:03:19.962207\",\n\n\"email\": \"[gui@email.com](https://mailto:gui@email.com)\",\n\n\"id\": 1,\n\n\"nome\": \"Guilherme\",\n\n\"role\": \"CLIENTE\"\n\n}\n\n\\],\n\n\"pagina\": 0,\n\n\"totalItens\": 1,\n\n\"totalPaginas\": 1\n\n}\n\n**Evidência:** T07 - Listar usuários cadastrados (200)"
+            "description": "**Cenário:** Listar usuários\n\n**Endpoint:** GET /usuarios\n\n**Pré-condição:** Usuário cadastrado\n\n**Entrada:**\n\n**Esperado:**\n\n200 OK\n\n{\n\n\"itens\": \\[\n\n{\n\n\"consentimentoLgpd\": true,\n\n\"dataConsentimento\": \"2026-03-10T21:03:19.962207\",\n\n\"email\": \"[gui@email.com](https://mailto:gui@email.com)\",\n\n\"id\": 1,\n\n\"nome\": \"Guilherme\",\n\n\"role\": \"CLIENTE\"\n\n}\n\n\\],\n\n\"pagina\": 0,\n\n\"totalItens\": 1,\n\n\"totalPaginas\": 1\n\n}\n\n**Evidência:** T07 - Listar usuários cadastrados (200)"
           },
           "response": []
         },
@@ -233,7 +234,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n\"nome\": \"pão unidade\",\r\n\"precoBase\": 0.50,\r\n\"produtoAtivo\": true,\r\n\"promocaoAtiva\": false,\r\n\"descontoPercentual\": 0\r\n}",
+              "raw": "{\r\n\"nome\": \"pão unidade\",\r\n\"precoBase\": 0.50,\r\n\"produtoAtivo\": false,\r\n\"promocaoAtiva\": false,\r\n\"descontoPercentual\": 0\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -249,7 +250,7 @@
                 "produtos"
               ]
             },
-            "description": "**Cenário:** Criar produto\n\n**Endpoint:** POST /produtos\n\n**Pré-condição:** Não estar cadastrado\n\n**Entrada:**\n\n{\n\n\"nome\": \"pão unidade\",\n\n\"precoBase\": 0.50,\n\n\"produtoAtivo\": true,\n\n\"promocaoAtiva\": false,\n\n\"descontoPercentual\": 0\n\n}\n\n**Esperado:**\n\n201 Created\n\n{\n\n\"descontoPercentual\": 0,\n\n\"id\": 1,\n\n\"nome\": \"pão unidade\",\n\n\"precoBase\": 0.50,\n\n\"produtoAtivo\": true,\n\n\"promocaoAtiva\": false\n\n}\n\n**Evidência:** T08 - Criar produto (201)"
+            "description": "**Cenário:** Criar produto\n\n**Endpoint:** POST /produtos\n\n**Pré-condição:** Nenhuma\n\n**Entrada:**\n\n{\n\n\"nome\": \"pão unidade\",\n\n\"precoBase\": 0.50,\n\n\"produtoAtivo\": true,\n\n\"promocaoAtiva\": false,\n\n\"descontoPercentual\": 0\n\n}\n\n**Esperado:**\n\n201 Created\n\n{\n\n\"descontoPercentual\": 0,\n\n\"id\": 1,\n\n\"nome\": \"pão unidade\",\n\n\"precoBase\": 0.50,\n\n\"produtoAtivo\": true,\n\n\"promocaoAtiva\": false\n\n}\n\n**Evidência:** T08 - Criar produto (201)"
           },
           "response": []
         },
@@ -279,7 +280,7 @@
                 "unidades"
               ]
             },
-            "description": "**Cenário:** Criar produto\n\n**Endpoint:** POST /produtos\n\n**Pré-condição:** Não estar cadastrado\n\n**Entrada:**\n\n{\n\n\"nome\": \"Unidade Centro\",\n\n\"ativa\": true\n\n}\n\n**Esperado:**\n\n201 Created\n\n{\n\n\"ativa\": true,\n\n\"id\": 1,\n\n\"nome\": \"Unidade Centro\"\n\n}\n\n**Evidência:** T09 - Criar Unidade (201)"
+            "description": "**Cenário:** Criar Unidade\n\n**Endpoint:** POST /unidades\n\n**Pré-condição:** Nenhuma\n\n**Entrada:**\n\n{\n\n\"nome\": \"Unidade Centro\",\n\n\"ativa\": true\n\n}\n\n**Esperado:**\n\n201 Created\n\n{\n\n\"ativa\": true,\n\n\"id\": 1,\n\n\"nome\": \"Unidade Centro\"\n\n}\n\n**Evidência:** T09 - Criar Unidade (201)"
           },
           "response": []
         },
@@ -309,7 +310,7 @@
                 "pedidos"
               ]
             },
-            "description": "**Cenário:** Criar pedido\n\n**Endpoint:** POST /pedidos\n\n**Pré-condição:** usuário cadastrado\n\n**Entrada:**\n\n{\n\n\"clienteId\": 1,\n\n\"unidadeId\": 1,\n\n\"canalPedido\": \"TOTEM\",\n\n\"cpfNota\": \"12345678905\"\n\n}\n\n**Esperado:**\n\n201 Created\n\n{ \n\n\"canalPedido\": \"TOTEM\",   \n\n\"clienteId\": 1,   \n\n\"cpfNota\": \"12345678905\",   \n\n\"criadoEm\": \"2026-03-11T12:03:11.9721759\",   \n\n\"id\": 1,    \"itens\": null,   \n\n\"statusPedido\": \"AGUARDANDO_PAGAMENTO\",   \n\n\"unidadeId\": 1,   \n\n\"valorTotal\": 0\n\n}\n\n**Evidência:** T10 - Criar Pedido (201)"
+            "description": "**Cenário:** Criar pedido\n\n**Endpoint:** POST /pedidos\n\n**Pré-condição:** Usuário cadastrado e unidade cadastrada ativa\n\n**Entrada:**\n\n{\n\n\"clienteId\": 1,\n\n\"unidadeId\": 1,\n\n\"canalPedido\": \"TOTEM\",\n\n\"cpfNota\": \"12345678905\"\n\n}\n\n**Esperado:**\n\n201 Created\n\n{\n\n\"canalPedido\": \"TOTEM\",\n\n\"clienteId\": 1,\n\n\"cpfNota\": \"12345678905\",\n\n\"criadoEm\": \"2026-03-11T12:03:11.9721759\",\n\n\"id\": 1, \"itens\": null,\n\n\"statusPedido\": \"AGUARDANDO_PAGAMENTO\",\n\n\"unidadeId\": 1,\n\n\"valorTotal\": 0\n\n}\n\n**Evidência:** T10 - Criar Pedido (201)"
           },
           "response": []
         },
@@ -339,7 +340,7 @@
                 "pedidos"
               ]
             },
-            "description": "**Cenário:** Criar pedido com unidade inexistente\n\n**Endpoint:** POST /pedidos\n\n**Pré-condição:** usuário cadastrado\n\n**Entrada:**\n\n{\n\n\"clienteId\": 1,\n\n\"unidadeId\": 2,\n\n\"canalPedido\": \"TOTEM\",\n\n\"cpfNota\": \"12345678905\"\n\n}\n\n**Esperado:**\n\n{   \n\n\"detail\": \"Unidade não encontrada.\",   \n\n\"instance\": \"/pedidos\",   \n\n\"status\": 404,   \n\n\"title\": \"Recurso não encontrado\",   \n\n\"type\": \"https://api.raizesdonordeste.com/errors/not-found\"\n\n}\n\n**Evidência:** T11 - Criar Pedido com unidade inexistente (404)"
+            "description": "**Cenário:** Criar pedido com unidade inexistente\n\n**Endpoint:** POST /pedidos\n\n**Pré-condição:** Usuário cadastrado\n\n**Entrada:**\n\n{\n\n\"clienteId\": 1,\n\n\"unidadeId\": 2,\n\n\"canalPedido\": \"TOTEM\",\n\n\"cpfNota\": \"12345678905\"\n\n}\n\n**Esperado:**\n\n{\n\n\"detail\": \"Unidade não encontrada.\",\n\n\"instance\": \"/pedidos\",\n\n\"status\": 404,\n\n\"title\": \"Recurso não encontrado\",\n\n\"type\": \"[https://api.raizesdonordeste.com/errors/not-found\"](https://api.raizesdonordeste.com/errors/not-found)\n\n}\n\n**Evidência:** T11 - Criar Pedido com unidade inexistente (404)"
           },
           "response": []
         },
@@ -369,7 +370,7 @@
                 "pedidos"
               ]
             },
-            "description": "**Cenário:** Criar pedido sem campo canalPedido\n\n**Endpoint:** POST /pedidos\n\n**Pré-condição:** usuário cadastrado\n\n**Entrada:**\n\n{\n\n\"clienteId\": 1,\n\n\"unidadeId\": 1,\n\n\"cpfNota\": \"12345678905\"\n\n}\n\n**Esperado:**\n\n{\n\n\"detail\": \"canalPedido é obrigatório\",\n\n\"instance\": \"/pedidos\",\n\n\"status\": 422,\n\n\"title\": \"Erro de validação\",\n\n\"type\": \"[https://api.raizesdonordeste.com/errors/validation-error\"](https://api.raizesdonordeste.com/errors/validation-error)\n\n}\n\n**Evidência:** T12 - Criar Pedido sem campo canalPedido (422)"
+            "description": "**Cenário:** Criar pedido sem campo canalPedido\n\n**Endpoint:** POST /pedidos\n\n**Pré-condição:** Usuário cadastrado e unidade ativa\n\n**Entrada:**\n\n{\n\n\"clienteId\": 1,\n\n\"unidadeId\": 1,\n\n\"cpfNota\": \"12345678905\"\n\n}\n\n**Esperado:**\n\n{\n\n\"detail\": \"canalPedido é obrigatório\",\n\n\"instance\": \"/pedidos\",\n\n\"status\": 422,\n\n\"title\": \"Erro de validação\",\n\n\"type\": \"[https://api.raizesdonordeste.com/errors/validation-error\"](https://api.raizesdonordeste.com/errors/validation-error)\n\n}\n\n**Evidência:** T12 - Criar Pedido sem campo canalPedido (422)"
           },
           "response": []
         },
@@ -489,7 +490,7 @@
                 "pagamentos"
               ]
             },
-            "description": "**Cenário:** Criar pagamento\n\n**Endpoint:** POST /pagamentos\n\n**Pré-condição:** pedido criado\n\n**Entrada:**\n\n{\n\n\"pedidoId\": 3\n\n}\n\n**Esperado:**\n\n201 Created\n\n{\n\n\"id\": 1,\n\n\"pedidoId\": 1,\n\n\"processadoEm\": \"2026-03-11T12:40:41.3800163\",\n\n\"resultadoPagamento\": \"APROVADO\"\n\n}\n\n**Evidência:** T16 - Criar Pagamento (201)"
+            "description": "**Cenário:** Criar pagamento\n\n**Endpoint:** POST /pagamentos\n\n**Pré-condição:** Pedido criado\n\n**Entrada:**\n\n{\n\n\"pedidoId\": 3\n\n}\n\n**Esperado:**\n\n201 Created\n\n{\n\n\"id\": 1,\n\n\"pedidoId\": 1,\n\n\"processadoEm\": \"2026-03-11T12:40:41.3800163\",\n\n\"resultadoPagamento\": \"APROVADO\"\n\n}\n\n**Evidência:** T16 - Criar Pagamento (201)"
           },
           "response": []
         },
@@ -519,7 +520,7 @@
                 "pedidos"
               ]
             },
-            "description": "**Cenário:** Listar pedidos após pagamento para verificar statusPedido\n\n**Endpoint:** GET /pedidos\n\n**Pré-condição:** Pedido criado e Pago\n\n**Entrada:**\n\n**Esperado:**\n\n200 OK\n\n{\n\n\"itens\": \\[\n\n{\n\n\"canalPedido\": \"TOTEM\",\n\n\"clienteId\": 1,\n\n\"cpfNota\": \"12345678905\",\n\n\"criadoEm\": \"2026-03-11T12:03:11.972176\",\n\n\"id\": 1,\n\n\"itens\": \\[\n\n{\n\n\"id\": 1,\n\n\"pedidoId\": 1,\n\n\"precoUnitario\": 0.50,\n\n\"produtoId\": 1,\n\n\"quantidade\": 6,\n\n\"subtotal\": 3.00\n\n}\n\n\\],\n\n\"statusPedido\": \"PAGO\",\n\n\"unidadeId\": 1,\n\n\"valorTotal\": 3.00\n\n}\n\n\\],\n\n\"pagina\": 0,\n\n\"totalItens\": 1,\n\n\"totalPaginas\": 1\n\n}\n\n**Evidência:** T17 - Listar Pedidos após pagamento - statusPedido (200)"
+            "description": "**Cenário:** Listar pedidos após pagamento para verificar statusPedido\n\n**Endpoint:** GET /pedidos\n\n**Pré-condição:** Pedido criado\n\n**Entrada:**\n\n**Esperado:**\n\n200 OK\n\n{\n\n\"itens\": \\[\n\n{\n\n\"canalPedido\": \"TOTEM\",\n\n\"clienteId\": 1,\n\n\"cpfNota\": \"12345678905\",\n\n\"criadoEm\": \"2026-03-11T12:03:11.972176\",\n\n\"id\": 1,\n\n\"itens\": \\[\n\n{\n\n\"id\": 1,\n\n\"pedidoId\": 1,\n\n\"precoUnitario\": 0.50,\n\n\"produtoId\": 1,\n\n\"quantidade\": 6,\n\n\"subtotal\": 3.00\n\n}\n\n\\],\n\n\"statusPedido\": \"PAGO\",\n\n\"unidadeId\": 1,\n\n\"valorTotal\": 3.00\n\n}\n\n\\],\n\n\"pagina\": 0,\n\n\"totalItens\": 1,\n\n\"totalPaginas\": 1\n\n}\n\n**Evidência:** T17 - Listar Pedidos após pagamento - statusPedido (200)"
           },
           "response": []
         },
@@ -549,7 +550,7 @@
                 "pagamentos"
               ]
             },
-            "description": "**Cenário:** Criar pagamento de pedido PAGO\n\n**Endpoint:** POST /pagamentos\n\n**Pré-condição:** pedido PAGO\n\n**Entrada:**\n\n{\n\n\"pedidoId\": 3\n\n}\n\n**Esperado:**\n\n{\n\n\"detail\": \"Este pedido já foi pago\",\n\n\"instance\": \"/pagamentos\",\n\n\"status\": 409,\n\n\"title\": \"Conflito\",\n\n\"type\": \"[https://api.raizesdonordeste.com/errors/conflict\"](https://api.raizesdonordeste.com/errors/conflict)\n\n}\n\n**Evidência:** T18 - Criar Pagamento de pedido PAGO (409)"
+            "description": "**Cenário:** Criar pagamento de pedido PAGO\n\n**Endpoint:** POST /pagamentos\n\n**Pré-condição:** Pedido estar com statusPedido PAGO\n\n**Entrada:**\n\n{\n\n\"pedidoId\": 3\n\n}\n\n**Esperado:**\n\n{\n\n\"detail\": \"Este pedido já foi pago\",\n\n\"instance\": \"/pagamentos\",\n\n\"status\": 409,\n\n\"title\": \"Conflito\",\n\n\"type\": \"[https://api.raizesdonordeste.com/errors/conflict\"](https://api.raizesdonordeste.com/errors/conflict)\n\n}\n\n**Evidência:** T18 - Criar Pagamento de pedido PAGO (409)"
           },
           "response": []
         },
