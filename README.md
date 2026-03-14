@@ -64,6 +64,10 @@ Github
 
 • https://github.com/RealGuin/raizes-do-nordeste-api.git
 
+JSON WEB TOKENS 
+
+• https://www.jwt.io/
+
 Swagger
 
 • http://localhost:8080/swagger-ui/index.html
