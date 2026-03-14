@@ -1,5 +1,6 @@
 package com.raizesdonordeste.raizesnovoapi.application.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import com.raizesdonordeste.raizesnovoapi.domain.Pedido;
 import com.raizesdonordeste.raizesnovoapi.domain.StatusPedido;
 import com.raizesdonordeste.raizesnovoapi.domain.Unidade;
 import com.raizesdonordeste.raizesnovoapi.domain.Usuario;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.ConflitoException;
 import com.raizesdonordeste.raizesnovoapi.domain.exception.RecursoNaoEncontradoException;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.PedidoRepository;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.UnidadeRepository;
@@ -53,13 +55,17 @@ public class PedidoService {
         if (unidade == null) {
             throw new RecursoNaoEncontradoException("Unidade não encontrada.");
         }
+        
+        if (!unidade.isAtiva()) {
+            throw new ConflitoException("Unidade inativa não pode receber pedidos.");
+        }
 
         Pedido pedido = new Pedido();
         pedido.setCliente(cliente);
         pedido.setUnidade(unidade);
         pedido.setCanalPedido(request.getCanalPedido());
         pedido.setStatusPedido(StatusPedido.AGUARDANDO_PAGAMENTO);
-        pedido.setValorTotal(request.getValorTotal());
+        pedido.setValorTotal(BigDecimal.ZERO);
         pedido.setCriadoEm(LocalDateTime.now());
         pedido.setCpfNota(request.getCpfNota());
 
@@ -99,10 +105,9 @@ public class PedidoService {
     }
 
     public PedidoResponse buscarPorId(Long id) {
-        Pedido pedido = pedidoRepository.findById(id).orElse(null);
-        if (pedido == null) {
-            return null;
-        }
+        Pedido pedido = pedidoRepository.findById(id)
+        		.orElseThrow(() -> new RecursoNaoEncontradoException("Pedido não encontrado."));
+        
         return toResponse(pedido);
     }
 

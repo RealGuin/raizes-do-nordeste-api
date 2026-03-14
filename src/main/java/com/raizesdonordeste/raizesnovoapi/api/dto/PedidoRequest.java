@@ -1,8 +1,5 @@
 package com.raizesdonordeste.raizesnovoapi.api.dto;
 
-import java.math.BigDecimal;
-
-
 import com.raizesdonordeste.raizesnovoapi.domain.CanalPedido;
 
 import jakarta.validation.constraints.NotNull;
@@ -21,10 +18,6 @@ public class PedidoRequest {
 	
 	@NotNull(message = "canalPedido é obrigatório")
 	private CanalPedido canalPedido;
-	
-	@NotNull(message = "valorTotal é obrigatório")
-	@Positive(message = "valorTotal deve ser maior que zero")
-    private BigDecimal valorTotal;
     
 	@Pattern(regexp = "\\d{11}", message = "cpfNota deve conter 11 números")
 	private String cpfNota;
@@ -54,14 +47,6 @@ public class PedidoRequest {
 
     public void setCanalPedido(CanalPedido canalPedido) {
         this.canalPedido = canalPedido;
-    }
-
-    public BigDecimal getValorTotal() {
-        return valorTotal;
-    }
-
-    public void setValorTotal(BigDecimal valorTotal) {
-        this.valorTotal = valorTotal;
     }
 
     public String getCpfNota() {

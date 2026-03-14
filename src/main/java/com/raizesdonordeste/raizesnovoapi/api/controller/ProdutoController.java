@@ -2,7 +2,6 @@ package com.raizesdonordeste.raizesnovoapi.api.controller;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,14 +41,8 @@ public class ProdutoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProdutoResponse> buscarPorId(@PathVariable Long id) {
-        ProdutoResponse produto = produtoService.buscarPorId(id);
-
-        if (produto == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(produto);
+    public ProdutoResponse buscarPorId(@PathVariable Long id) {
+        return produtoService.buscarPorId(id);
     }
 
     @DeleteMapping("/{id}")

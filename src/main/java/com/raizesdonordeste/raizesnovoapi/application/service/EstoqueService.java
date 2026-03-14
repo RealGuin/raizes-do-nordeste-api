@@ -11,6 +11,7 @@ import com.raizesdonordeste.raizesnovoapi.api.dto.EstoqueResponse;
 import com.raizesdonordeste.raizesnovoapi.api.dto.PaginacaoResponse;
 import com.raizesdonordeste.raizesnovoapi.domain.Estoque;
 import com.raizesdonordeste.raizesnovoapi.domain.Unidade;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.RecursoNaoEncontradoException;
 import com.raizesdonordeste.raizesnovoapi.domain.Produto;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.EstoqueRepository;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.UnidadeRepository;
@@ -38,6 +39,14 @@ public class EstoqueService {
         Unidade unidade = unidadeRepository.findById(request.getUnidadeId()).orElse(null);
         Produto produto = produtoRepository.findById(request.getProdutoId()).orElse(null);
 
+        if (unidade == null) {
+            throw new RecursoNaoEncontradoException("Unidade não encontrada.");
+        }
+        
+        if (produto == null) {
+            throw new RecursoNaoEncontradoException("Produto não encontrado.");
+        }
+        
         Estoque estoque = estoqueRepository.findByUnidadeIdAndProdutoId(
                 request.getUnidadeId(),
                 request.getProdutoId()
@@ -88,12 +97,9 @@ public class EstoqueService {
 
     public EstoqueResponse buscarPorId(Long id) {
 
-        Estoque estoque = estoqueRepository.findById(id).orElse(null);
-
-        if (estoque == null) {
-            return null;
-        }
-
+        Estoque estoque = estoqueRepository.findById(id)
+        		.orElseThrow(() -> new RecursoNaoEncontradoException("Estoque não encontrado."));
+       
         EstoqueResponse response = new EstoqueResponse();
         response.setId(estoque.getId());
         response.setUnidadeId(estoque.getUnidade().getId());

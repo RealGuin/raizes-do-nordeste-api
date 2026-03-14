@@ -19,7 +19,7 @@ public class Usuario {
 
 	    private String email;
 
-	    private String senhaHash;
+	    private String senha;
 
 	    @Enumerated(EnumType.STRING)
 	    private Role role;
@@ -51,12 +51,12 @@ public class Usuario {
 	        this.email = email;
 	    }
 
-	    public String getSenhaHash() {
-	        return senhaHash;
+	    public String getSenha() {
+	        return senha;
 	    }
 
-	    public void setSenhaHash(String senhaHash) {
-	        this.senhaHash = senhaHash;
+	    public void setSenha(String senha) {
+	        this.senha = senha;
 	    }
 
 	    public Role getRole() {

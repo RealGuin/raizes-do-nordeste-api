@@ -2,7 +2,6 @@ package com.raizesdonordeste.raizesnovoapi.api.controller;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,14 +40,8 @@ public class UnidadeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UnidadeResponse> buscarPorId(@PathVariable Long id) {
-        UnidadeResponse unidade = unidadeService.buscarPorId(id);
-
-        if (unidade == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(unidade);
+    public UnidadeResponse buscarPorId(@PathVariable Long id) {
+        return unidadeService.buscarPorId(id);
     }
 
     @DeleteMapping("/{id}")

@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.raizesdonordeste.raizesnovoapi.api.dto.LoginRequest;
 import com.raizesdonordeste.raizesnovoapi.api.dto.LoginResponse;
 import com.raizesdonordeste.raizesnovoapi.domain.Usuario;
-import com.raizesdonordeste.raizesnovoapi.domain.exception.UnauthorizedException;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.NaoAutorizadoException;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.UsuarioRepository;
 
 @Service
@@ -32,12 +32,12 @@ public class AuthService {
     public LoginResponse login(LoginRequest request) {
 
     	Usuario usuario = usuarioRepository.findByEmail(request.getEmail())
-    	        .orElseThrow(() -> new UnauthorizedException("Email ou senha inválidos"));
+    	        .orElseThrow(() -> new NaoAutorizadoException("Email ou senha inválidos"));
 
-    	boolean senhaCorreta = passwordEncoder.matches(request.getSenha(), usuario.getSenhaHash());
+    	boolean senhaCorreta = passwordEncoder.matches(request.getSenha(), usuario.getSenha());
 
     	if (!senhaCorreta) {
-    	    throw new UnauthorizedException("Email ou senha inválidos");
+    	    throw new NaoAutorizadoException("Email ou senha inválidos");
     	}
         
         log.info("Usuario autenticado - id={}, role={}",
@@ -48,7 +48,7 @@ public class AuthService {
         response.setId(usuario.getId());
         response.setToken(jwtService.gerarToken(usuario));
         response.setTipo("Bearer");
-        response.setRole(usuario.getRole().name());
+        response.setRole(usuario.getRole());
         
 
         return response;

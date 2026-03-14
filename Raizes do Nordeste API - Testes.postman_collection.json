@@ -1,0 +1,590 @@
+{
+  "info": {
+    "_postman_id": "1b685c5d-2589-4caf-bde9-adcb51a51566",
+    "name": "Raizes do Nordeste API - Testes",
+    "description": "# Raizes do Nordeste API - Testes\n\n## Visão Geral\n\nEste conjunto abrangente de testes valida a funcionalidade e o tratamento de erros da API Raizes do Nordeste, cobrindo fluxos de usuário críticos e casos de borda em múltiplos endpoints.\n\n## Cenários de Teste\n\nA coleção inclui casos de teste para:\n\n- Gestão de Usuários\n    \n    - Registro de usuário bem-sucedido\n        \n    - Validação de registro (campos ausentes, conformidade LGPD)\n        \n    - Autenticação de usuário e geração de token JWT\n        \n- Gestão de Pedidos\n    \n    - Criação de pedidos em diferentes canais (APP, TOTEM)\n        \n    - Adição de itens ao pedido\n        \n    - Tratamento de pedidos com unidades inválidas\n        \n    - Listagem e filtragem de pedidos\n        \n- Processamento de Pagamentos\n    \n    - Criação de pagamentos\n        \n    - Tratamento de cenários de pagamento (sucesso, duplicidade, recusa)\n        \n- Gestão de Unidades e Produtos\n    \n    - Criação de unidades e produtos\n        \n    - Listagem de recursos\n        \n\n## Estratégias-Chave de Teste\n\n- Cobre diversos códigos de status HTTP (200 OK, 201 Criado, 400 Requisição Inválida, 401 Não Autorizado, 404 Não Encontrado, 409 Conflito, 422 Erro de validação)\n    \n- Testa cenários positivos e negativos\n    \n- Valida estruturas de resposta da API e mensagens de erro\n    \n\n## Propósito\n\nGarantir a confiabilidade, funcionalidade e robustez da API Raizes do Nordeste, testando sistematicamente seus recursos principais e mecanismos de tratamento de erros.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "48617643"
+  },
+  "item": [
+    {
+      "name": "Testes",
+      "item": [
+        {
+          "name": "T01 - Cadastro usuário válido (201)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"canalPedido\": \"APP\",\r\n  \"nome\": \"Guilherme\",\r\n  \"email\": \"gui@email.com\",\r\n  \"senha\": \"1234\",\r\n  \"role\": \"CLIENTE\",\r\n  \"consentimentoLgpd\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            },
+            "description": "**Cenário:** Cadastro usuário válido\n\n**Endpoint:** POST /usuarios\n\n**Pré-condição:** Nenhuma\n\n**Entrada:**\n\n{ \"canalPedido\": \"APP\",\n\n\"nome\": \"Guilherme\",\n\n\"email\": \"gui@email.com\",\n\n\"senha\": \"1234\",\n\n\"role\": \"CLIENTE\",\n\n\"consentimentoLgpd\": true}\n\n**Esperado:**\n\n201 Created\n\n{ \"consentimentoLgpd\": true,\n\n\"dataConsentimento\": \"2026-03-10T21:03:19.9622069\",\n\n\"email\": \"gui@email.com\",\n\n\"id\": 1,\n\n\"nome\": \"Guilherme\",\n\n\"role\": \"CLIENTE\"}\n\n**Evidência:** T01 - Cadastro usuário válido (201)"
+          },
+          "response": []
+        },
+        {
+          "name": "T02 - Cadastro sem LGPD para canalPedido APP e WEB (422)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"canalPedido\": \"APP\",\r\n  \"nome\": \"João\",\r\n  \"email\": \"joao@email.com\",\r\n  \"senha\": \"1234\",\r\n  \"role\": \"CLIENTE\",\r\n  \"consentimentoLgpd\": false\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            },
+            "description": "**Cenário:** Cadastro sem consentimento LGPD\n\n**Endpoint:** POST /usuarios\n\n**Pré-condição:** Nenhuma\n\n**Entrada:**\n\n{\n\n\"canalPedido\": \"APP\",\n\n\"nome\": \"João\",\n\n\"email\": \"joao@email.com\",\n\n\"senha\": \"1234\",\n\n\"role\": \"CLIENTE\",\n\n\"consentimentoLgpd\": false\n\n}\n\n**Esperado:**\n\n{\n\n\"detail\": \"Para cadastro de cliente via APP ou WEB, o consentimento LGPD é obrigatório\", \"instance\": \"/usuarios\",\n\n\"status\": 422,\n\n\"title\": \"Erro de validação\",\n\n\"type\": \"https://api.raizesdonordeste.com/errors/validation-error\"\n\n}\n\n**Evidência:** T02 - Cadastro sem LGPD para canalPedido APP e WEB (422)"
+          },
+          "response": []
+        },
+        {
+          "name": "T03 - Cadastro de usuário com e-mail já existente (409)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"canalPedido\": \"APP\",\r\n  \"nome\": \"Guilherme\",\r\n  \"email\": \"gui@email.com\",\r\n  \"senha\": \"1234\",\r\n  \"role\": \"CLIENTE\",\r\n  \"consentimentoLgpd\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            },
+            "description": "**Cenário:** Cadastro de usuário com e-mail já existente\n\n**Endpoint:** POST /usuarios\n\n**Pré-condição:** usuário com email já cadastrado no sistema\n\n**Entrada:**\n\n{\n\n\"canalPedido\": \"APP\",\n\n\"nome\": \"Guilherme\",\n\n\"email\": \"[gui@email.com](https://mailto:gui@email.com)\",\n\n\"senha\": \"1234\",\n\n\"role\": \"CLIENTE\",\n\n\"consentimentoLgpd\": true\n\n}\n\n**Esperado:**\n\n{\n\n\"detail\": \"Já existe um usuário cadastrado com este email\",\n\n\"instance\": \"/usuarios\",\n\n\"status\": 409,\n\n\"title\": \"Conflito\",\n\n\"type\": \"https://api.raizesdonordeste.com/errors/conflict\"\n\n}\n\n**Evidência:** T03 - Cadastro de usuário com e-mail já existente (409)"
+          },
+          "response": []
+        },
+        {
+          "name": "T04 - Cadastro sem campo preenchido (400)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"canalPedido\": \"APP\",\r\n  \"nome\": \"Guilherme\",\r\n  \"email\": \"gui@email.com\",\r\n  \"senha\": \"1234\",\r\n  \"role\": \"\",\r\n  \"consentimentoLgpd\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            },
+            "description": "**Cenário:** Cadastro sem campo preenchido\n\n**Endpoint:** POST /usuarios\n\n**Pré-condição:** Nenhuma\n\n**Entrada:**\n\n{ \"canalPedido\": \"APP\",\n\n\"nome\": \"Guilherme\",\n\n\"email\": \"[gui@email.com](https://mailto:gui@email.com)\",\n\n\"senha\": \"1234\",\n\n\"role\": \"\", -> (vazio)\n\n\"consentimentoLgpd\": true}\n\n**Esperado:**\n\n{\n\n\"detail\": \"Requisição inválida ou campo com formato incorreto.\",\n\n\"instance\": \"/usuarios\",\n\n\"status\": 400,\n\n\"title\": \"Requisição inválida\",\n\n\"type\": \"[https://api.raizesdonordeste.com/errors/bad-request\"](https://api.raizesdonordeste.com/errors/bad-request)\n\n}\n\n**Evidência:** T04 - Cadastro sem campo preenchido (400)"
+          },
+          "response": []
+        },
+        {
+          "name": "T05 - Login válido com geração de token JWT (200)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"gui@email.com\",\r\n  \"senha\": \"1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "**Cenário:** Login válido com geração de token\n\n**Endpoint:** POST /auth/login\n\n**Pré-condição:** Usuário estar cadastrado\n\n**Entrada:**\n\n{\n\n\"email\": \"[gui@email.com](https://mailto:gui@email.com)\",\n\n\"senha\": \"1234\"\n\n}\n\n**Esperado:**\n\n200 OK\n\n{\n\n\"id\": 1,\n\n\"role\": \"CLIENTE\",\n\n\"tipo\": \"Bearer\",\n\n\"token\": \"eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJndWlAZW1haWwuY29tIiwicm9sZSI6IkNMSUVOVEUiLCJpYXQiOjE3NzMyMzM5MTcsImV4cCI6MTc3MzIzNzUxN30.THknK-i6ycLUOwoTzIqsVUNkefj01ZMxr2Qvedc69mXCJOMJV3saveaxBeAusDI2\"\n\n}\n\n**Evidência:** T05 - Login válido com geração de token JWT (200)"
+          },
+          "response": []
+        },
+        {
+          "name": "T06 - Login inválido (401)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"email\": \"joao@email.com\",\r\n\"senha\": \"1234\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "description": "**Cenário:** Login inválido\n\n**Endpoint:** POST /auth/login\n\n**Pré-condição:** Usuário não estar cadastrado\n\n**Entrada:**\n\n{\n\n\"email\": \"[joao@email.com](https://mailto:joao@email.com)\",\n\n\"senha\": \"1234\"\n\n}\n\n**Esperado:**\n\n{\n\n\"detail\": \"Email ou senha inválidos\",\n\n\"instance\": \"/auth/login\",\n\n\"status\": 401,\n\n\"title\": \"Não autorizado\",\n\n\"type\": \"[https://api.raizesdonordeste.com/errors/unauthorized\"](https://api.raizesdonordeste.com/errors/unauthorized)\n\n}\n\n**Evidência:** T06 - Login inválido (401)"
+          },
+          "response": []
+        },
+        {
+          "name": "T07 - Listar usuários cadastrados (200)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            },
+            "description": "**Cenário:** Listar usuários\n\n**Endpoint:** GET /usuarios\n\n**Pré-condição:** Usuário cadastrado\n\n**Entrada:**\n\n**Esperado:**\n\n200 OK\n\n{\n\n\"itens\": \\[\n\n{\n\n\"consentimentoLgpd\": true,\n\n\"dataConsentimento\": \"2026-03-10T21:03:19.962207\",\n\n\"email\": \"[gui@email.com](https://mailto:gui@email.com)\",\n\n\"id\": 1,\n\n\"nome\": \"Guilherme\",\n\n\"role\": \"CLIENTE\"\n\n}\n\n\\],\n\n\"pagina\": 0,\n\n\"totalItens\": 1,\n\n\"totalPaginas\": 1\n\n}\n\n**Evidência:** T07 - Listar usuários cadastrados (200)"
+          },
+          "response": []
+        },
+        {
+          "name": "T08 - Criar produto (201)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"nome\": \"pão unidade\",\r\n\"precoBase\": 0.50,\r\n\"produtoAtivo\": false,\r\n\"promocaoAtiva\": false,\r\n\"descontoPercentual\": 0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/produtos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "produtos"
+              ]
+            },
+            "description": "**Cenário:** Criar produto\n\n**Endpoint:** POST /produtos\n\n**Pré-condição:** Nenhuma\n\n**Entrada:**\n\n{\n\n\"nome\": \"pão unidade\",\n\n\"precoBase\": 0.50,\n\n\"produtoAtivo\": true,\n\n\"promocaoAtiva\": false,\n\n\"descontoPercentual\": 0\n\n}\n\n**Esperado:**\n\n201 Created\n\n{\n\n\"descontoPercentual\": 0,\n\n\"id\": 1,\n\n\"nome\": \"pão unidade\",\n\n\"precoBase\": 0.50,\n\n\"produtoAtivo\": true,\n\n\"promocaoAtiva\": false\n\n}\n\n**Evidência:** T08 - Criar produto (201)"
+          },
+          "response": []
+        },
+        {
+          "name": "T09 - Criar Unidade (201)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n\"nome\": \"Unidade Centro\",\r\n\"ativa\": true\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/unidades",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "unidades"
+              ]
+            },
+            "description": "**Cenário:** Criar Unidade\n\n**Endpoint:** POST /unidades\n\n**Pré-condição:** Nenhuma\n\n**Entrada:**\n\n{\n\n\"nome\": \"Unidade Centro\",\n\n\"ativa\": true\n\n}\n\n**Esperado:**\n\n201 Created\n\n{\n\n\"ativa\": true,\n\n\"id\": 1,\n\n\"nome\": \"Unidade Centro\"\n\n}\n\n**Evidência:** T09 - Criar Unidade (201)"
+          },
+          "response": []
+        },
+        {
+          "name": "T10 - Criar Pedido (201)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"clienteId\": 1,\r\n  \"unidadeId\": 1,\r\n  \"canalPedido\": \"TOTEM\",\r\n  \"cpfNota\": \"12345678905\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            },
+            "description": "**Cenário:** Criar pedido\n\n**Endpoint:** POST /pedidos\n\n**Pré-condição:** Usuário cadastrado e unidade cadastrada ativa\n\n**Entrada:**\n\n{\n\n\"clienteId\": 1,\n\n\"unidadeId\": 1,\n\n\"canalPedido\": \"TOTEM\",\n\n\"cpfNota\": \"12345678905\"\n\n}\n\n**Esperado:**\n\n201 Created\n\n{\n\n\"canalPedido\": \"TOTEM\",\n\n\"clienteId\": 1,\n\n\"cpfNota\": \"12345678905\",\n\n\"criadoEm\": \"2026-03-11T12:03:11.9721759\",\n\n\"id\": 1, \"itens\": null,\n\n\"statusPedido\": \"AGUARDANDO_PAGAMENTO\",\n\n\"unidadeId\": 1,\n\n\"valorTotal\": 0\n\n}\n\n**Evidência:** T10 - Criar Pedido (201)"
+          },
+          "response": []
+        },
+        {
+          "name": "T11 - Criar Pedido com unidade inexistente (404)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"clienteId\": 1,\r\n  \"unidadeId\": 2,\r\n  \"canalPedido\": \"TOTEM\",\r\n  \"cpfNota\": \"12345678905\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            },
+            "description": "**Cenário:** Criar pedido com unidade inexistente\n\n**Endpoint:** POST /pedidos\n\n**Pré-condição:** Usuário cadastrado\n\n**Entrada:**\n\n{\n\n\"clienteId\": 1,\n\n\"unidadeId\": 2,\n\n\"canalPedido\": \"TOTEM\",\n\n\"cpfNota\": \"12345678905\"\n\n}\n\n**Esperado:**\n\n{\n\n\"detail\": \"Unidade não encontrada.\",\n\n\"instance\": \"/pedidos\",\n\n\"status\": 404,\n\n\"title\": \"Recurso não encontrado\",\n\n\"type\": \"[https://api.raizesdonordeste.com/errors/not-found\"](https://api.raizesdonordeste.com/errors/not-found)\n\n}\n\n**Evidência:** T11 - Criar Pedido com unidade inexistente (404)"
+          },
+          "response": []
+        },
+        {
+          "name": "T12 - Criar Pedido sem campo canalPedido (422)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"clienteId\": 1,\r\n  \"unidadeId\": 1,\r\n  \"cpfNota\": \"12345678905\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            },
+            "description": "**Cenário:** Criar pedido sem campo canalPedido\n\n**Endpoint:** POST /pedidos\n\n**Pré-condição:** Usuário cadastrado e unidade ativa\n\n**Entrada:**\n\n{\n\n\"clienteId\": 1,\n\n\"unidadeId\": 1,\n\n\"cpfNota\": \"12345678905\"\n\n}\n\n**Esperado:**\n\n{\n\n\"detail\": \"canalPedido é obrigatório\",\n\n\"instance\": \"/pedidos\",\n\n\"status\": 422,\n\n\"title\": \"Erro de validação\",\n\n\"type\": \"[https://api.raizesdonordeste.com/errors/validation-error\"](https://api.raizesdonordeste.com/errors/validation-error)\n\n}\n\n**Evidência:** T12 - Criar Pedido sem campo canalPedido (422)"
+          },
+          "response": []
+        },
+        {
+          "name": "T13 - Adicionar item ao pedido (201)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"pedidoId\": 1,\r\n  \"produtoId\": 1,\r\n  \"quantidade\": 6\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/itens-pedido",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "itens-pedido"
+              ]
+            },
+            "description": "**Cenário:** Adiciona item ao pedido\n\n**Endpoint:** POST /itens-pedido\n\n**Pré-condição:** Pedido criado\n\n**Entrada:**\n\n{\n\n\"pedidoId\": 1,\n\n\"produtoId\": 1,\n\n\"quantidade\": 6\n\n}\n\n**Esperado:**\n\n201 Created\n\n{\n\n\"id\": 1,\n\n\"pedidoId\": 1,\n\n\"precoUnitario\": 0.50,\n\n\"produtoId\": 1,\n\n\"quantidade\": 6,\n\n\"subtotal\": 3.00\n\n}\n\n**Evidência:** T13 - Adicionar item ao pedido (201)"
+          },
+          "response": []
+        },
+        {
+          "name": "T14 - Adicionar item inexistente ao pedido (404)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"pedidoId\": 1,\r\n  \"produtoId\": 2,\r\n  \"quantidade\": 6\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/itens-pedido",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "itens-pedido"
+              ]
+            },
+            "description": "**Cenário:** Adicionar item inexistente ao pedido\n\n**Endpoint:** POST /itens-pedido\n\n**Pré-condição:** Pedido criado\n\n**Entrada:**\n\n{\n\n\"pedidoId\": 1,\n\n\"produtoId\": 2,\n\n\"quantidade\": 6\n\n}\n\n**Esperado:**\n\n{\n\n\"pedidoId\": 1,\n\n\"produtoId\": 2,\n\n\"quantidade\": 6\n\n}\n\n**Evidência:** T14 - Adicionar item inexistente ao pedido (404)"
+          },
+          "response": []
+        },
+        {
+          "name": "T15 - Listar Pedidos (200)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            },
+            "description": "**Cenário:** Listar pedidos\n\n**Endpoint:** GET /pedidos\n\n**Pré-condição:** Pedido criado\n\n**Entrada:**\n\n**Esperado:**\n\n200 OK\n\n{\n\n\"itens\": \\[\n\n{\n\n\"canalPedido\": \"TOTEM\",\n\n\"clienteId\": 1,\n\n\"cpfNota\": \"12345678905\",\n\n\"criadoEm\": \"2026-03-11T12:03:11.972176\",\n\n\"id\": 1,\n\n\"itens\": \\[\n\n{\n\n\"id\": 1,\n\n\"pedidoId\": 1,\n\n\"precoUnitario\": 0.50,\n\n\"produtoId\": 1,\n\n\"quantidade\": 6,\n\n\"subtotal\": 3.00\n\n}\n\n\\],\n\n\"statusPedido\": \"AGUARDANDO_PAGAMENTO\",\n\n\"unidadeId\": 1,\n\n\"valorTotal\": 3.00\n\n}\n\n\\],\n\n\"pagina\": 0,\n\n\"totalItens\": 1,\n\n\"totalPaginas\": 1\n\n}\n\n**Evidência:** T15 - Listar Pedidos (200)"
+          },
+          "response": []
+        },
+        {
+          "name": "T16 - Criar Pagamento (201)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"pedidoId\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pagamentos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagamentos"
+              ]
+            },
+            "description": "**Cenário:** Criar pagamento\n\n**Endpoint:** POST /pagamentos\n\n**Pré-condição:** Pedido criado\n\n**Entrada:**\n\n{\n\n\"pedidoId\": 3\n\n}\n\n**Esperado:**\n\n201 Created\n\n{\n\n\"id\": 1,\n\n\"pedidoId\": 1,\n\n\"processadoEm\": \"2026-03-11T12:40:41.3800163\",\n\n\"resultadoPagamento\": \"APROVADO\"\n\n}\n\n**Evidência:** T16 - Criar Pagamento (201)"
+          },
+          "response": []
+        },
+        {
+          "name": "T17 - Listar Pedidos após pagamento - statusPedido (200)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pedidos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pedidos"
+              ]
+            },
+            "description": "**Cenário:** Listar pedidos após pagamento para verificar statusPedido\n\n**Endpoint:** GET /pedidos\n\n**Pré-condição:** Pedido criado\n\n**Entrada:**\n\n**Esperado:**\n\n200 OK\n\n{\n\n\"itens\": \\[\n\n{\n\n\"canalPedido\": \"TOTEM\",\n\n\"clienteId\": 1,\n\n\"cpfNota\": \"12345678905\",\n\n\"criadoEm\": \"2026-03-11T12:03:11.972176\",\n\n\"id\": 1,\n\n\"itens\": \\[\n\n{\n\n\"id\": 1,\n\n\"pedidoId\": 1,\n\n\"precoUnitario\": 0.50,\n\n\"produtoId\": 1,\n\n\"quantidade\": 6,\n\n\"subtotal\": 3.00\n\n}\n\n\\],\n\n\"statusPedido\": \"PAGO\",\n\n\"unidadeId\": 1,\n\n\"valorTotal\": 3.00\n\n}\n\n\\],\n\n\"pagina\": 0,\n\n\"totalItens\": 1,\n\n\"totalPaginas\": 1\n\n}\n\n**Evidência:** T17 - Listar Pedidos após pagamento - statusPedido (200)"
+          },
+          "response": []
+        },
+        {
+          "name": "T18 - Criar Pagamento  de pedido PAGO (409)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"pedidoId\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pagamentos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagamentos"
+              ]
+            },
+            "description": "**Cenário:** Criar pagamento de pedido PAGO\n\n**Endpoint:** POST /pagamentos\n\n**Pré-condição:** Pedido estar com statusPedido PAGO\n\n**Entrada:**\n\n{\n\n\"pedidoId\": 3\n\n}\n\n**Esperado:**\n\n{\n\n\"detail\": \"Este pedido já foi pago\",\n\n\"instance\": \"/pagamentos\",\n\n\"status\": 409,\n\n\"title\": \"Conflito\",\n\n\"type\": \"[https://api.raizesdonordeste.com/errors/conflict\"](https://api.raizesdonordeste.com/errors/conflict)\n\n}\n\n**Evidência:** T18 - Criar Pagamento de pedido PAGO (409)"
+          },
+          "response": []
+        },
+        {
+          "name": "T19 - Criar Pagamento RECUSADO (201)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"pedidoId\": 4\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pagamentos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pagamentos"
+              ]
+            },
+            "description": "**Cenário:** Criar pagamento\n\n**Endpoint:** POST /pagamentos\n\n**Pré-condição:** Pedido criado\n\n**Entrada:**\n\n{\n\n\"pedidoId\": 4\n\n}\n\n**Esperado:**\n\n201 Created\n\n{\n\n\"id\": 4,\n\n\"pedidoId\": 4,\n\n\"processadoEm\": \"2026-03-11T13:01:24.837588\",\n\n\"resultadoPagamento\": \"RECUSADO\"\n\n}\n\n**Evidência:** T19 - Criar Pagamento RECUSADO (201)\n\nOBS.: O gateway de pagamento utilizado neste projeto é um mock com comportamento aleatório.  \nAtualmente, a probabilidade é:  \n\\- 70% APROVADO  \n\\- 20% RECUSADO  \n\\- 10% ERRO\n\nPara facilitar a reprodução do cenário de pagamento recusado durante os testes, pode-se ajustar temporariamente as proporções no MockPagamentoGateway."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

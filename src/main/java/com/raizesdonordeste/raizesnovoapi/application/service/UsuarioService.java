@@ -18,7 +18,8 @@ import com.raizesdonordeste.raizesnovoapi.api.dto.UsuarioResponse;
 import com.raizesdonordeste.raizesnovoapi.domain.CanalPedido;
 import com.raizesdonordeste.raizesnovoapi.domain.Role;
 import com.raizesdonordeste.raizesnovoapi.domain.Usuario;
-import com.raizesdonordeste.raizesnovoapi.domain.exception.ConflictException;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.ConflitoException;
+import com.raizesdonordeste.raizesnovoapi.domain.exception.RecursoNaoEncontradoException;
 import com.raizesdonordeste.raizesnovoapi.domain.exception.ValidacaoException;
 import com.raizesdonordeste.raizesnovoapi.infrastructure.repository.UsuarioRepository;
 
@@ -48,7 +49,7 @@ public class UsuarioService {
     	}
     	
     	if (usuarioRepository.existsByEmail(request.getEmail())) {
-            throw new ConflictException(
+            throw new ConflitoException(
                     "Já existe um usuário cadastrado com este email"                
             );
     	}
@@ -56,7 +57,7 @@ public class UsuarioService {
     	Usuario usuario = new Usuario();
         usuario.setNome(request.getNome());
         usuario.setEmail(request.getEmail());
-        usuario.setSenhaHash(passwordEncoder.encode(request.getSenhaHash()));
+        usuario.setSenha(passwordEncoder.encode(request.getSenha()));
         usuario.setRole(request.getRole());
         usuario.setConsentimentoLgpd(request.isConsentimentoLgpd());
         
@@ -111,11 +112,9 @@ public class UsuarioService {
     }
 
     public UsuarioResponse buscarPorId(Long id) {
-        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        Usuario usuario = usuarioRepository.findById(id)
+        		.orElseThrow(() -> new RecursoNaoEncontradoException("Usuário não encontrado."));
 
-        if (usuario == null) {
-            return null;
-        }
 
         UsuarioResponse response = new UsuarioResponse();
         response.setId(usuario.getId());
