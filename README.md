@@ -1,4 +1,4 @@
-README – Raízes do Nordeste API
+# README – Raízes do Nordeste API
 
 API REST desenvolvida em Spring Boot para gerenciamento de pedidos do restaurante Raízes do Nordeste.
 
@@ -32,7 +32,7 @@ O projeto foi gerado utilizando o Spring Boot Initializr:
 
 ---------------------------------------------------------------------
 
-TESTE RÁPIDO DA API
+# TESTE RÁPIDO DA API
 
 Após iniciar a aplicação, você pode testar rapidamente a API utilizando o Swagger ou o Postman.
 
@@ -58,7 +58,7 @@ Também é possível utilizar a collection do Postman incluída no projeto para 
 
 ---------------------------------------------------------------------
 
-LINKS PARA ACESSO RÁPIDO
+# LINKS PARA ACESSO RÁPIDO
 
 Github
 
@@ -78,7 +78,7 @@ Swagger
 
 ---------------------------------------------------------------------
 
-REQUISITOS
+# REQUISITOS
 
 Para executar o projeto é necessário ter instalado:
 
@@ -122,7 +122,7 @@ Principais dependências utilizadas:
 
 ---------------------------------------------------------------------
 
-CLONAR O PROJETO
+# CLONAR O PROJETO
 
 Clone o repositório do GitHub:
 
@@ -134,7 +134,7 @@ Depois entre na pasta do projeto:
 
 ---------------------------------------------------------------------
 
-VARIÁVEIS DE AMBIENTE
+# VARIÁVEIS DE AMBIENTE
 
 Este projeto não utiliza arquivo .env.
 
@@ -146,7 +146,7 @@ Caso necessário, essas configurações podem ser adaptadas para variáveis de a
 
 ---------------------------------------------------------------------
 
-INSTALAR DEPENDÊNCIAS
+# INSTALAR DEPENDÊNCIAS
 
 Todas as dependências do projeto são gerenciadas pelo Maven através do arquivo:
 
@@ -162,7 +162,7 @@ O Maven fará automaticamente o download de todas as bibliotecas necessárias.
 
 ---------------------------------------------------------------------
 
-BANCO DE DADOS
+# BANCO DE DADOS
 
 O projeto utiliza H2 Database configurado em modo arquivo.
 
@@ -195,7 +195,7 @@ A estrutura do banco de dados é criada automaticamente pelo Hibernate (JPA) com
 
 ---------------------------------------------------------------------
 
-LOGS DA APLICAÇÃO
+# LOGS DA APLICAÇÃO
 
 A aplicação gera logs em arquivos .txt dentro da pasta:
 
@@ -211,7 +211,7 @@ Esses logs podem ser utilizados para acompanhar a execução da API e registrar 
 
 ---------------------------------------------------------------------
 
-INICIAR A API
+# INICIAR A API
 
 Para iniciar a aplicação execute no terminal dentro da pasta do projeto:
 
@@ -231,7 +231,7 @@ Após iniciar a aplicação, a API estará disponível em:
 
 ---------------------------------------------------------------------
 
-ACESSAR A DOCUMENTAÇÃO DA API
+# ACESSAR A DOCUMENTAÇÃO DA API
 
 A documentação da API pode ser acessada através do Swagger (OpenAPI).
 
@@ -251,7 +251,7 @@ No Swagger é possível:
 
 ---------------------------------------------------------------------
 
-TESTAR A API COM POSTMAN
+# TESTAR A API COM POSTMAN
 
 Foi criada uma collection no Postman contendo testes dos principais endpoints da API (fluxo principal).
 
@@ -280,7 +280,7 @@ Fluxo recomendado para testar a API:
 
 ---------------------------------------------------------------------
 
-FLUXO PRINCIPAL DA APLICAÇÃO
+# FLUXO PRINCIPAL DA APLICAÇÃO
 
 Fluxo típico de uso da API:
 
@@ -308,7 +308,7 @@ Caso necessário, as proporções podem ser alteradas diretamente na classe:
 
 ---------------------------------------------------------------------
 
-TECNOLOGIAS UTILIZADAS
+# TECNOLOGIAS UTILIZADAS
 
 • Java 21
 
@@ -334,7 +334,7 @@ TECNOLOGIAS UTILIZADAS
 
 ---------------------------------------------------------------------
 
-OBSERVAÇÕES
+# OBSERVAÇÕES
 
 • O banco de dados utilizado é H2 em modo arquivo.
 
