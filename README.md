@@ -26,6 +26,10 @@ A API permite realizar operações básicas de um sistema de pedidos, incluindo:
 
 Este projeto foi desenvolvido para fins acadêmicos como atividade prática de desenvolvimento de uma API REST.
 
+O projeto foi gerado utilizando o Spring Boot Initializr:
+
+• https://start.spring.io/
+
 ---------------------------------------------------------------------
 
 TESTE RÁPIDO DA API
