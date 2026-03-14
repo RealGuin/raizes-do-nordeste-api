@@ -49,7 +49,9 @@ Após iniciar a aplicação, você pode testar rapidamente a API utilizando o Sw
 Também é possível utilizar a collection do Postman incluída no projeto para testar o fluxo completo da aplicação:
 
 • Raizes do Nordeste API - Testes.postman_collection
+
 • Raizes API Local.postman_environment
+
 ---------------------------------------------------------------------
 
 LINKS PARA ACESSO RÁPIDO
