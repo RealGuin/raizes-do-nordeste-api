@@ -75,12 +75,12 @@ Banco de dados utilizado:
 Framework utilizado:
 - Spring Boot 4.0.3
 
-Principais dependências utilizadas:
+Principais dependências:
 - Spring Web
 - Spring Data JPA
 - Spring Security
 - Validation (Bean Validation)
-- Lombok (não utilizado diretamente no código)
+- Lombok (não utilizado)
 - H2 Database
 - JWT (JJWT)
 - SpringDoc OpenAPI (Swagger)
