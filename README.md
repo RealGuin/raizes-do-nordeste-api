@@ -37,6 +37,7 @@ Após iniciar a aplicação, você pode testar rapidamente a API utilizando o Sw
 4) Utilize os demais endpoints para criar produtos, unidades e pedidos.
 
 Também é possível utilizar a collection do Postman incluída no projeto para testar o fluxo completo da aplicação:
+
 • Raizes do Nordeste API - Testes.postman_collection
 • Raizes API Local.postman_environment
 ---------------------------------------------------------------------
